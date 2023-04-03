@@ -1,0 +1,54 @@
+{% extends "index.html" %} {% block title %}ChangeLog{% endblock %} 
+{% block content %}
+
+<form class="w-50 p-3 text-center bolder" method="POST">
+  <h3 align="center">Change password and user name</h3>
+  <div class="form-group">
+    <label for="cng_name_field">User Name</label>
+    <input
+      type="text"
+      class="form-control border border-primary"
+      id="cng_name_field"
+      name="cng_name_field"
+      placeholder="Enter first name"
+    />
+  </div>
+  <div class="form-group">
+      <label for="old_pswd_field">Old Password</label>
+      <input
+        type="password"
+        class="form-control border border-primary"
+        id="old_pswd_field"
+        name="old_pswd_field"
+        placeholder="Enter password"
+      />
+    </div>
+  <div class="form-group">
+    <label for="cng_pswd1_field">New Password</label>
+    <input
+      type="password"
+      class="form-control border border-primary"
+      id="cng_pswd1_field"
+      name="cng_pswd1_field"
+      placeholder="Enter password"
+    />
+  </div>
+  <div class="form-group">
+    <label for="cng_pswd2_field">Repeat password</label>
+    <input
+      type="password"
+      class="form-control border border-primary"
+      id="cng_pswd2_field"
+      name="cng_pswd2_field"
+      placeholder="Confirm password"
+    />
+  </div>
+  <br />
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+
+ 
+    
+{% endblock %}
+    

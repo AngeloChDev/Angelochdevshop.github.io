@@ -1,0 +1,64 @@
+{% extends "index.html" %} {% block title %}Create Product{% endblock %} 
+{% block content %}
+
+<form class="w-50 p-3 text-center bolder" method="POST" style="margin:auto;" enctype="multipart/form-data">
+    <h3 align="center">Create your product</h3>
+    <div class="form-group">
+        <label for="product_name">Name</label>
+        <input
+            type="text"
+            class="form-control border border-primary"
+            id="product_name"
+            name="product_name"
+            placeholder="Enter a name for your product"
+        />
+    </div>
+    <div class="form-group">
+        <label for="product_description">Description</label>
+        <textarea
+            class="form-control border border-primary"
+            id="product_description"
+            name="product_description"
+            placeholder="Enter a product description"
+            cols="22"
+            rows="2"
+        ></textarea>
+    </div>
+    <div class="form-group" style="text-align: left;">
+        <label for="product_price">Price</label>
+        <input
+            type="number"
+            class="form-control border border-primary"
+            id="product_price"
+            name="product_price"
+            style="width: 17vw;"
+        />
+    </div>
+    <div class="form-group">
+        <label for="product_photo">Some photo</label>
+        <input
+            type="file"
+            class=""
+            id="product_photo"
+            name="product_photo"
+        />
+    </div>
+    <div class="form-group">
+        <label for="product_category">Product</label>
+        <select
+            class="form-control border border-primary"
+            id="product_category"
+            name="product_category">
+            {% for i in product_category %}
+            <option value="{{ i }}">{{ i }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <br />
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+
+ 
+    
+{% endblock %}

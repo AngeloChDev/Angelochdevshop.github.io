@@ -1,0 +1,49 @@
+{% extends "index.html" %} {% block title %}Sign Up{% endblock %} {% block
+content %}
+
+<form class="w-50 p-3 text-center bolder" method="POST" style="margin:auto">
+  <h3 align="center">Sign Up</h3>
+  <div class="form-group">
+    <label for="username_field">User name</label>
+    <input
+      type="text"
+      class="form-control border border-primary"
+      id="username_field"
+      name="username_field"
+      placeholder="Enter first name"
+    />
+  </div>
+  <div class="form-group">
+    <label for="password_field">Password</label>
+    <input
+      type="password"
+      class="form-control border border-primary"
+      id="password_field"
+      name="password_field"
+      placeholder="Enter password"
+    />
+  </div>
+  <div class="form-group">
+    <label for="password_auth">Repeat password</label>
+    <input
+      type="password"
+      class="form-control border border-primary"
+      id="password_auth"
+      name="password_auth"
+      placeholder="Confirm password"
+    />
+  </div>
+  <div class="form-group">
+    <select class="form-select"id="country" name="country">
+      {% for i in countries.values() %}
+      <option value="{{i}}" >{{i}}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <br />
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+
+
+{% endblock %}
