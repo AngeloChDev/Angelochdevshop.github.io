@@ -1,0 +1,92 @@
+{% extends "home.html" %}
+{% block cart %}
+<!-- CART DIV-->
+<div class="col" style="display:block" id="cart_div">
+    <div class="row">
+        <h2 align="center">Cart</h2>
+    </div>
+    <div class="row">
+        <div class="col p-3">      <!-- cart table-->
+            <div class="row shadow">
+                <table class="table shadow tb" title="Your orders">
+                    <thead>
+                        <tr class="shadow">
+                            <td><b>Product</b></td>
+                            <td><b>Quantity</b></td>
+                            <td><b>Cost</b></td>
+                        </tr>
+                    </thead>
+                    <tbody class="table-group-divider">
+                       
+                        {% for i in ord %}
+                        <tr>
+                            <td>{{ i['product']['name'][:10] }}</td>
+                            <td>{{ i['quantity'] }}</td>
+                            <td>{{ i['quantity']*i['product']['price'] }}</td>
+                        </tr>    
+                        {% else %}
+                        <tr>
+                            <td colspan="3" style="text-align:center;"><h4>{% print('empty') %}</h4></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+    
+            <div class="row shadow">      <!-- open set data order field  -->
+                <button onclick="myShow()" class="btn p-2 btn-outline-success btn-lg shadow" style="width:100%" ><b>Insert order data</b></button>
+    
+            </div>
+        </div>
+    </div>
+
+</div>   
+<div class="col p-1 shadow" id="in_data_row" style="display:none;text-align: center;">
+    <form method="POST">
+  
+        <h3 >Order data</h3>
+        {% if ord %}
+        {% for i in ord %}
+        <div class="row p-1" >
+            <div class="col-auto">
+                
+                <label for="order_data_field" class="fs-5">Write here your address for thw shipment:</label>
+                <textarea
+                    class="form-control border border-primary"
+                    id="order_data_field"
+                    name="order_data_field"
+                    placeholder="Enter your order details..."
+                    rows="2"
+                    cols="40"
+                    style="font-size: 1em;"
+                ></textarea>
+            </div>
+            <div class="col-auto p-5">
+                <input type="file" name="file_img" id="file_img" class="btn-primary"style="width:4.8em"><br>
+            </div>
+        </div>    
+        {% else %}{% print('empty cart') %}
+        {% endfor %}
+        {% endif %}
+        <div class="row px-3 " id="email_d" style="justify-content:left;">
+            <label for="email">Write here an email where receive seller contact:</label>
+            <input type="email" name="email" id="email" class="form-control-lg border border-primary" >
+        </div>
+        <div class="card border-success m-3 p-3  dt" id="pay_data">
+         
+            <!--    random num ord-->
+            <h4 class="tb font">Num shipment</h4>
+            <textarea name="ord_num" id="ord_num" cols="22" class="form-control-lg border border-primary" readonly>{% print(ord_num) %}</textarea>
+            <!--    random num wallet-->
+            
+            <div class="input-group mt-3">
+                
+                <input type="text" id="wallet_adr" name="wallet_adr" class="form-control" placeholder="Wallet address" aria-label="Recipient's username" aria-describedby="button-addon2">
+                <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
+            </div>
+        </div>
+        <input type="submit" name="submit" id="submit" value="Submit order" class="btn p-3 btn-outline-success ms-5 w-50 shadow">
+    </form>
+</div>
+
+{% endblock %}

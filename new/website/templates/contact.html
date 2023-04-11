@@ -1,0 +1,87 @@
+{% extends "index.html" %} {% block title %}Add some contact mode{% endblock %} 
+{% block content %}
+<div class="col p-3 font">
+    
+    <form action="" method="post">
+        <div class="d-flex justify-content-md-center">
+            <div class="form-group font fs-4 mt-0 pt-0 me-5 pe-3">
+                <label for="email" class="mt-0 pt-0 fs-5">Write your email:</label>
+                <input 
+                    type="email"
+                    class="form-control border w-2 m-auto border-primary"
+                    id="email"
+                    name="email"
+                    placeholder=""
+                >
+            </div><br>
+            <div class="form-group font fs-5 mt-1 pt-0 ms-5 ps-3">
+                <label for="number" class="mt-0 pt-0">Write your phone number:</label>
+                <input 
+                    type="number"
+                    class="form-control w-2 m-auto border border-primary"
+                    id="number"
+                    name="number"
+                    placeholder=""
+                >
+            </div><br>
+        </div>
+        <div class="row form-group font fs-5 mt-0 pt-0">
+            <label for="wallet_field" class="mt-0 pt-0">Wallet :</label>
+            <input 
+                type="text"
+                class="form-control w-2 border border-primary m-auto"
+                id="wallet_field"
+                name="wallet_field"
+                placeholder=""
+            >
+        </div><br>
+        <div class="row">
+
+            <div class="col form-group font fs-5 mt-0 pt-0">
+                <label for="social_name" class="mt-0 pt-0">Social-media name :</label>
+                <input 
+                    type="text"
+                    class="form-control w-2 border border-primary m-auto"
+                    id="social_name"
+                    name="social_name"
+                    placeholder=""
+                ><br>
+
+                <label for="social" class="mt-0 pt-0">Paste a link :</label>
+                <input 
+                    type="text"
+                    class="form-control border border-primary w-2 m-auto"
+                    id="social"
+                    name="social"
+                    placeholder=""
+                >
+            </div><br>
+
+            <div class="col form-group font fs-5 mt-0 pt-0">
+                <label for="social2_name" class="mt-0 pt-0">Second social-media name :</label>
+                <input 
+                    type="text"
+                    class="form-control border border-primary w-2 m-auto"
+                    id="social2_name"
+                    name="social2_name"
+                    placeholder=""
+                ><br>
+                <label for="social2" class="mt-0 pt-0">Paste a link :</label>
+                <input 
+                    type="text"
+                    class="form-control border border-primary w-2 m-auto"
+                    id="social2"
+                    name="social2"
+                    placeholder=""
+                >
+            </div><br>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary m-auto" >Submit</button>
+        </div>
+    </form>
+
+
+</div>
+
+{% endblock %}

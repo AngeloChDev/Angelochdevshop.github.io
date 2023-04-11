@@ -1,9 +1,10 @@
-from flask import render_template, url_for, session, flash, redirect, request, Blueprint
+from flask import render_template, url_for, session, flash, redirect, request, Blueprint, current_app
 from flask_login import login_user, current_user, logout_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from website import db, bcrypt
 from website.models import User
 from country_list import countries_for_language
+import os
 
 countries = dict(countries_for_language('en'))
  
@@ -31,12 +32,20 @@ def signin():
             flash('Password must be at least 3 characters.', category='error')
         else:
             
-            user = User(username=newuser, country=country_name)
+            user = User(username=newuser, country=country_name, photo_user='')
             user.set_password(password_auth)
             db.session.add(user)
             db.session.commit()
             flash('Your account has been created! You are now able to log in', 'success')
             session['user_id'] = user.id
+            session['CART'] = []
+            
+            folder = os.path.join( current_app.config["UPLOAD_FOLDER"], str(user.id))
+            p_folder = folder + '/products_photo/'
+            o_folder = folder + '/orders_file/'
+            os.makedirs(folder)
+            os.makedirs(p_folder)
+            os.makedirs(o_folder)
             login_user(user)
             return redirect(url_for('main.home'))
         
@@ -56,6 +65,7 @@ def login():
             if check_password_hash(user.password_hash, password):
                 flash('Logged in successfully!', category='success')
                 session['user_id'] = user.id
+                session['CART'] = []
                 login_user(user)
                 
                 return redirect(url_for('main.home'))

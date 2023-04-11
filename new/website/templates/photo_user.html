@@ -1,0 +1,20 @@
+{% extends "index.html" %} {% block title %}Account Home{% endblock %}
+{% block content%}
+<div class="row m-auto p-1">
+    <form class="w-50 p-3 text-center bolder m-auto" method="POST" enctype="multipart/form-data">
+        <h3 align="center">Upload your user image</h3>
+        <div class="form-group">
+            <label for="photo_user">Select one photo</label>
+            <input
+                type="file"
+                class="form-control border border-primary"
+                id="photo_user"
+                name="photo_user"
+            />
+        </div>
+        <button type="submit" name="photo_user_submit" class="btn btn-primary">Submit</button>
+    </form>
+    
+</div>
+
+{% endblock %}

@@ -2,32 +2,30 @@
 %}
 <div class="row p-3">
     <div class="col">
+        <div class="col rounded-circle mt-0">
+            {% if user.photo_user %}
+            <img src="{{ url_for('static', filename='images/'+ user.id|string + '/' + user.photo_user )}}"alt="error loading user image"  class="mb-2 rounded-circle" style="height:10em;width:6em;"></img>
+            {% else %}
+            <img src="{{ url_for('static', filename='ico/user.svg' )}}"alt="error loading user image"  class="mb-2 rounded-circle" style="height:10em;width:6em;"></img>
+            {% endif %}
+        </div>
+        <!--<div class="row rounded-circle mt-0 ms-3">
+            
+            <img src="{{ url_for('static', filename='images/'+ user.id|string + '/' + user.photo_user )}}"alt="error loading user image" onerror="this.src='static/ico/user.svg'" class="mb-2 rounded-circle" style="height:10em;width:7.5em;"></img>
+             
+        </div>-->
         <div class="row">
             <h1>Account</h1>
         </div>
         
         <div class="row">
-            <h4>Username : {{user.username}}</h4>
+            <h4>Username :<br> {{user.username}}</h4>
         </div><br>
-        <div class="row p-2">
-            <a href="{{ url_for('change_log.changelog') }}" class="shadow btn p-2 btn btn-outline-danger"><b class="fw-bolder"> Change Password</b></a>
-        </div>
-        <div class="row p-2">
-            <button onclick="show_cart()" class="shadow btn p-2 btn btn-outline-info"><b class="fw-bolder">Cart</b></button>
-        </div>
-        <div class="row p-2">
-            <a href="{{ url_for('utils.product') }}" class="shadow btn p-2 btn btn-outline-warning"><b class="fw-bolder">Create Product</b></a>
-        </div>
-        <div class="row p-2">
-            <button onclick="show_product_list()" class="shadow btn p-2 btn btn-outline-success"><b class="fw-bolder">Your Products</b></button>
-        </div>
-            
-           
         
+        <button class="btn  ms-3 border border-success-subtle bg-success bg-opacity-10" style="color:bisque" type="button" data-bs-toggle="offcanvas" data-bs-target="#userSetting" aria-controls="offcanvasBottom">User settings</button>        
+   
     </div>
-    
-
-    <!-- CART DIV-->
+   
     <div class="col" style="display:none" id="cart_div">
         <div class="row">
             <h2 align="center">Cart</h2>
@@ -39,22 +37,24 @@
                         <thead>
                             <tr class="shadow">
                                 <td><b>Product</b></td>
+                                <td><b>Quantity</b></td>
                                 <td><b>Cost</b></td>
-                                <td><b>Stuck</b></td>
                             </tr>
                         </thead>
                         <tbody class="table-group-divider">
-                            {% for i in orders %}
+                            {% if ord %}
+                            {% for i in ord %}
                             <tr>
-                                <td>{{ i['PRODUCT']}}</td>
-                                <td>{{ i['COST']}}</td>
-                                <td>{{ i['QUANTITY']}}</td>
+                                <td>{{ i['product']['name'][:10] }}</td>
+                                <td>{{ i['quantity'] }}</td>
+                                <td>{{ i['quantity']*i['product']['price'] }}</td>
                             </tr>    
                             {% else %}
                             <tr>
                                 <td colspan="3" style="text-align:center;"><h4>{% print('empty') %}</h4></td>
                             </tr>
                             {% endfor %}
+                            {% endif %}
                         </tbody>
                     </table>
                 </div>
@@ -65,88 +65,159 @@
                 </div>
             </div>
         </div>
+    
+    </div>  
+    
+   
+</div>  
+{% if ord %}
+<div class="col p-1 shadow" id="in_data_row" style="display:none;text-align: center;">
+    <form method="POST" enctype="multipart/form-data">
 
-    </div>
-        
-</div>
-<hr class="shadow-lg" style="height:1px; background-color:blue;">
-
-
-<div class="col p-1 shadow" id="in_data_row" style="display: none;text-align: center;">
-    <form method="POST">
-  
         <h3 >Order data</h3>
-        <p style="font-size: .7em;">
-        please enter details like: name "product", "name and surname to" date . :if is auth no data ---------- please rename the file with same name <br></p>
-        {% for i in orders %}
+        
+        
         <div class="row p-1" >
             <div class="col-auto">
                 
-                <label for="order_data_field" style="font-size: .7em;"></label>
-                <textarea
+                <label for="order_address" class="fs-5">Write here your address for thw shipment:</label>
+                <input
+                    type="text"
                     class="form-control border border-primary"
-                    id="order_data_field"
-                    name="order_data_field"
+                    id="order_address"
+                    name="order_address"
                     placeholder="Enter your order details..."
-                    rows="2"
-                    cols="40"
-                    style="font-size: 1em;"
-                ></textarea>
+                    style="font-size:1em;"
+                />
             </div>
-            <div class="col-auto p-5">
-                
-                <input type="file" name="file_img" id="file_img" class="btn-primary"style="width:4.8em"><br>
-                
+            {% for i in ord%}
+            <div class="row">
+                <div class="row">
+                    <input type="hidden" name="order_id" id="order_id" value="{{ i['product']['id'] }}">
+                    <input type="hidden" name="order_qnt" id="order_qnt" value="{{ i['quantity'] }}">
+                </div>
+                {% if i['product']['require_file'] %}
+                <div class="col-auto p-5 my-0 py-0">
+                    <label for="file-{{ i['product']['id'] }}" class="fs-6">file needed for:<br> {{ i['product']['name']}}</label>
+                    <input type="file" name="file-{{i['product']['id']}}" id="file-{{i['product']['id']}}" class="btn-primary"style="width:4.8em"><br>
+                </div>
+                {% endif %}
             </div>
+            {% endfor %}
         </div>    
-        {% else %}{% print('empty cart') %}
-        {% endfor %}
-       
-        <div class="row  " id="email_d" style="display:none;">
-            <div class="col-9" style="margin-top: 2em; margin-left: 8em;">
-                <p >only this</p>
-            </div>
-            <div class="col-3 p-3" style="justify-content: left; margin-top: -4em; margin-left: 2em;">
-                <label for="email"><p><b>Email</b></p></label>
-
-                <input type="email" name="email" id="email" class="form-control-lg border border-primary" >
-            </div>
-                
-
+        
+        <hr class="shadow-lg" style="height:1px; background-color:blue;"> 
+        <div class="row px-3 " id="email_d" style="justify-content:left;">
+            <label for="order_email">Write here an email where receive seller contact:</label>
+            <input type="email" name="order_email_field" id="order_email_field" class="form-control-lg border border-primary" >
         </div>
-        <div class="card border-success mb-3 p-4 dt" id="pay_data" style="display: none;">
-         
+        <div class="row px-3 " style="justify-content:left;">
+            <label for="order_tel">Write here aphone number where receive seller contact:</label>
+            <input type="tel" name="order_tel" id="order_tel" class="form-control-lg border border-primary" >
+        </div>
+        <div class="card border-success m-3 p-3  dt" id="pay_data">
+        
             <!--    random num ord-->
-            <h4 class="card-title">num ord</h4>
-            <textarea name="ord_num" id="ord_num" cols="22" class="form-control-lg border border-primary" readonly>{% print(ord_num) %}</textarea>
+            <h5 class="tb font">Num shipment</h5>
+            <textarea name="order_pin" id="order_pin" cols="22" class="form-control-lg border border-primary" >{% print(ord_num) %}</textarea>
             <!--    random num wallet-->
-            <h3>wallet</h3>
-            <textarea name="ord_wll" id="ord_wll" cols="22" class="form-control-lg border border-primary" readonly>wallet</textarea>
+            
+            <div class="input-group mt-3">
+                
+                <textarea id="order_wallet" name="order_wallet" class="form-control" placeholder="Wallet address" aria-label="Recipient's username" aria-describedby="button-addon2"></textarea>
+                <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
+            </div>
         </div>
-        <input type="submit" name="submit" id="submit" value="Submit order" class="btn p-3 btn-outline-success btn-lg shadow" style="display: none;">
+        <input type="submit" name="register" id="register" value="Submit order" class="btn p-3 btn-outline-success ms-5 w-50 shadow">
+        
     </form>
-    <div class="row p-3" style="justify-content: center;">
-        <button  onclick="myEmail()"  id="email_btn" class="btn p-3 btn-outline-success btn-lg shadow" style="display:none;" >Next</button>
-        <button value="Payment mode" onclick="myPay()" id="pay_btn" class="btn p-3 btn-outline-success btn-lg shadow" style="display: none;">Payment</button>
+
+</div>
+
+{% endif %}
+<div class="offcanvas offcanvas-start bg-base"  tabindex="-1" id="userSetting" aria-labelledby="offcanvasBottomLabel">
+    <div class="offcanvas-header">
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body small">
+        <div class="row p-2">
+            <a href="{{ url_for('change_log.changelog') }}" class="shadow btn p-2 btn btn-outline-danger w-2"><b class="fw-bolder"> Change Password</b></a>
+        </div>
+        <div class="row p-2">
+            <button onclick="show_cart()" class="shadow btn p-2 btn btn-outline-info w-2"><b class="fw-bolder">Cart</b></button>
+            
+        </div>
+        <div class="row p-2">
+            <a href="{{ url_for('utils.product') }}" class="shadow btn p-2 btn btn-outline-warning w-2"><b class="fw-bolder">Create Product</b></a>
+        </div>
+        <div class="row p-2">
+            <button onclick="show_product_list()" class="shadow btn p-2 btn btn-outline-success w-2"><b class="fw-bolder">Your Products</b></button>
+        </div>
+        <div class="row p-2">
+            <a href="{{ url_for('utils.bio') }}" class="shadow btn p-2 btn btn-outline-warning w-2"><b class="fw-bolder">Write your bio</b></a>
+        </div>
+        <div class="row p-2">
+            <a href="{{ url_for('utils.contact') }}" class="shadow btn p-2 btn btn-outline-warning w-2"><b class="fw-bolder">Add contact mode</b></a>
+        </div>
+        <div class="row p-2">
+            <a href="{{ url_for('utils.photo_user') }}" class="shadow btn p-2 btn btn-outline-warning w-2"><b class="fw-bolder">Add photo user</b></a>
+        </div>
     </div>
 </div>
+
 <br><br><br> 
 <div id="product_list_div" name="product_list" class="row p-3" style="display: none;">
 
 {% for i in user_products %}
 
     <div class="row p-2">
-        <div class="col shadow">
+        <div class="col-3 shadow">
+            <div id="carouselExample{{i.id}}" class="carousel slide">
+                <div class="carousel-inner">
+                    {% for p in i.photo %}
+                    <div class="carousel-item active">
+                        
+                        <img src="{{ url_for('static', filename='images/' + i.seller.id|string + '/' + p) }}" class="c{{i.id}}"id="{{i.name}}"style="height: 9.5rem;width: 100%;"/> 
+                    
+                    </div>
+                    {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample{{i.id}}" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExample{{i.id}}" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+        <div class="col-9 ps-1" style="height: 9.5rem;background-color:slategray;color:lightgray;">
+            <div class="p-0 m-0">
+                <h5>Name:{{ i.name[:27] }}</h5>
+            </div>
+            <div class="p-0" style=" margin-top:-.9em;">
+                <em style="font-size: .85rem;">Description : {{ i.description[:77] }}</em>
+                <br><p style="font-size: .7rem;">date of pubblication:{{ i.date_posted.strftime('%Y -%h -%d') }}</p>
+            </div>
+            <div style="margin-top: -1em;">
+                <em>Cost :{{ i.price }}$ </em>
+                
+            </div>
+            <div class="hstack gap-3 position-absolute top-0 end-0 p-3" >
+            
+                <button class="btn-outline-info p-0 shadow" style="width:2.5vw;height: 5.3vh;">
+                    <a href="/product/{{i.id}}"><img src="{{ url_for('static', filename='ico/arrow.svg')}}"style="width:3.3vw;height: 4.7vh;border-radius:50%;margin-left:-.9em;"></img>
+                    </a>
+                </button>
             
             
-            <img src="{{ url_for('static', filename='images/' + i.photo) }}" style="width: 25vw;height: 12.5em;"/> 
+                <button class="btn-outline-info p-0 shadow " style="width:2.5vw;height: 5.7vh;">
+                    <a href="/product/{{i.id}}/delete"><img src="{{ url_for('static', filename='ico/trash.svg')}}"style="width:3.3vw;height:4.4vh;border-radius:50%;margin-left:-.7em;"></img>
+                    </a>
+                </button>
+            </div>
         </div>
-        <div class="card-body p-2 font" style="height: 12.5rem;background-color:slategray;color:lightgray;width:30vw">
-            <h4>Article name: {{ i.name }}</h4>
-            <em>this is the description of this article. All about how its work<br>{{ i.description }}</em>
-                <br><p>date of pubblication:{{ i.date_posted.strftime('%Y -%h -%d') }}</p><em>Cost {{ i.price }}$ </em>
-        </div>
-        
     </div><br>
 {% else %}
     <h4 class="font">No products to show</h4>

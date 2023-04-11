@@ -1,7 +1,7 @@
 {% extends "index.html" %} {% block title %}Create Product{% endblock %} 
 {% block content %}
 
-<form class="w-50 p-3 text-center bolder" method="POST" style="margin:auto;" enctype="multipart/form-data">
+<form class="w-50 p-3 text-center bolder m-auto" method="POST" enctype="multipart/form-data">
     <h3 align="center">Create your product</h3>
     <div class="form-group">
         <label for="product_name">Name</label>
@@ -41,6 +41,7 @@
             class=""
             id="product_photo"
             name="product_photo"
+            multiple
         />
     </div>
     <div class="form-group">
@@ -53,6 +54,11 @@
             <option value="{{ i }}">{{ i }}</option>
             {% endfor %}
         </select>
+    </div>
+    <br />
+    <div class="form-group ">
+        <label for="required_file" class="">Require file for this product?</label>
+        <input name="required_file" id="required_file"class="form-check-input ms-1" type="checkbox" value="">
     </div>
     <br />
   <button type="submit" class="btn btn-primary">Submit</button>

@@ -1,25 +1,28 @@
 {% extends "index.html" %} {% block title %}Shop{% endblock %} {% block content
     %}
-<div class="row">
-  <div class="col">
-    <h1 align="center">Shop</h1><br>
-  </div>
+<div class=" hstack gap-5 px-5 text-center">
+  
+  <h1 class="position-absolute start-50">Shop</h1><br>
 
-
+  <form method="POST" class="position-absolute end-0 me-5 mt-2 ">
+    <input type="submit" name="pay"value="pay" class="btn btn-outline-success bg-base">
+  </form>
+  <a href="/home" class="btn btn-outline-success bg-base">home</a>
 </div>
+
 <div class="row p-2 form-group">
   <form method="POST" class="p-4 row">
     <div class="col">
       <select name="country_value" id="country_value" class="form-control border border-primary" style="width: 20vw;">
-        <option value="" selected disabled hidden>Choose here</option>
+        <option value="" selected disabled hidden>Choose country</option>
         {% for i in country.values() %}
         <option value="{{ i }}">{{ i }}</option>
         {% endfor %}
       </select>
     </div>
     <div class="col">
-      <select name="category_value" id="category_value"  class="form-control border border-primary" style="width: 10vw;">
-        <option value="" selected disabled hidden>Choose here</option>
+      <select name="category_value" id="category_value"  class="form-control border border-primary" style="width: 20vw;">
+        <option value="" selected disabled hidden>Choose category</option>
         {% for i in category %}
         <option value="{{ i }}">{{ i }}</option>
         {% endfor %}
@@ -33,25 +36,62 @@
 <div class="row p-3">
   {% for i in prod %}
   <div class="col" style="margin-bottom: 2em;;">
-    <div class="card shadow" style="width: 18rem;">
-      
-      <img src="{{ url_for('static', filename='images/' + i.photo) }}" style="width: 100%;height: 8.5em;"/>
-      <div class="card-body p-1" style="height: 11rem;background-color:slategray;color:lightgray;">
-        <h3>Article {{ i.name }}</h3>
-        <div style="margin-top: -1em;">
-          <em style="font-size: .75em;">Description of this article:<br>{{ i.description[:60] }}{{ i.seller.id }}</em><p>Cost {{ i.price }}$ </p>
-        </div>
-        <form method="POST" style="width:100%;">
-          <div class="row" style="padding: 0;margin-left:.2em;margin-top: -1.3em;">
-            <input type="number" name="qnt" id="qnt" min="1" class="border border-primary shadow p-3 mb-5 bg-body-tertiary rounded" style="font-size:1em; width:3.6em; height:2em; margin-right:2em;margin-top:.4em">
-            <input type="hidden" name="product_code" value="{{ i.name }}">
+    <div class="card shadow" style="width: 15rem;">
+      <div id="carouselExample{{i.id}}" class="carousel slide">
+        <div class="carousel-inner">
+            {% for p in i.photo %}
+            <div class="carousel-item active">
+                
+              <img srcset="{{ url_for('static', filename='images/' + i.seller.id|string + '/' + p) }}"
+               src="" style="height: 12.5em;width: 100%;"/> 
             
-            <div class="">
-              <input type="submit" name="buyNow" class="btn btn-success btn-lg shadow p-1" value="Buy now!" style="height: 2em;text-align: center; width:100%">
-              
             </div>
+            {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample{{i.id}}" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample{{i.id}}" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+      <div class="card-body p-1" style="height: 10rem;background-color:slategray;color:lightgray;">
+        <div class="row">
+          <div class="col-9">
+            <h3>Article {{ i.name[:22] }}</h3>
           </div>
-        </form>
+          <div class="col p-2">
+            <button class="btn btn-outline-primary p-0 shadow" style="border-radius: 50%;">
+              <a href="/seller/{{ i.seller.id }}">
+                <img src="{{ url_for('static', filename='images/'+ i.seller.id|string + '/' + i.seller.photo_user )}}"alt="error loading user image" onerror="this.src='static/images/seller.png'" style="width:2.5vw;height: 7vh;border-radius:50%;margin-top: -.25em;"></img>
+              </a>
+            </button>
+          </div>
+        </div><br>
+   <!-- <div class="p-0" style="margin-top: -2.7em;">
+          <em style="font-size: .75em;color: #fff;">Description :<br>{{ i.description[:90] }}{{ i.seller.username }}
+            
+          </em>
+        </div><br>-->
+        <div class="row p-2" style="margin-top: -2em;" >
+          <p>Cost {{ i.price }}$ </p>
+        </div><br>
+        <div class="p-0" style="margin-top: -3em;">
+          <form method="POST" style="width:100%;">
+            <div class="row" style="padding: 0;margin-left:.2em;margin-top: -1.4em;">
+              <div class="col">
+                <input type="number" name="qnt" id="qnt" min="1" class="border border-primary shadow p-3 mb-5 bg-body-tertiary rounded" style="font-size:1em; width:3.6em; height:2em; margin-right:2em;margin-top:.4em">
+                <input type="hidden" name="code" value="{{ i.id }}">
+              </div>
+            
+              <div class=" col  mx-auto">
+                <input type="submit" name="buy_now" class="btn btn-success btn-md shadow font p-1 w-1" value="Buy now!" style="height: 2em; width:100%">
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>

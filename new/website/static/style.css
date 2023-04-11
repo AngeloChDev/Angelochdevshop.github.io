@@ -4,7 +4,9 @@ body{
   color: #bfbfbf;
   font-family: Gabriola, Cambria, Cochin, Georgia, Times, 'Times New Roman', serif  , fantasy;
 }
-
+.bg-base{
+  background-color: #1c1c21;
+}
 .tb{
   color:#bfbfbf
 }
@@ -17,20 +19,57 @@ body{
   text-align: center;
 
 }
+.ms-11{
+  margin-left: 12.5vw;
+}
 
-#cngf{
-    display: block;
+.ms-25{
+  margin-left: 25vw;
 }
-#btnData{
-    display: none;
+
+#navbar{
+  background-color: #1c1c21;
 }
+.w-1{
+  width: 13vw;
+}
+
+.w-2{
+  width: 25vw;
+}
+
+.display-left{
+  position:absolute;
+  top:50%;
+  left:0%;
+  transform:translate(0%,-50%);
+  -ms-transform:translate(-0%,-50%)
+}
+.display-right{
+  position:absolute;
+  top:7%;
+  right:0%;
+  transform:translate(0%,-50%);
+  -ms-transform:translate(0%,-50%)}
+.display-right-5{
+  position:absolute;
+  top:50%;
+  right:0%;
+  transform:translate(0%,-50%);
+  -ms-transform:translate(0%,-50%)}
+.hgh3{
+  height:33%;
+}
+
+.whitesmoke{
+  background-color: whitesmoke;
+}
+
 @media screen and (max-width:900px){
-    #cngf{
-        display:none;
-    }
-    #btnData{
-        display: block;
-    }
+  .ms-25{
+    margin-left: 20vw;
+  }
+  #news_vertical{ display: none;}
 }
 /* Popup container - can be anything you want */
 .popup {

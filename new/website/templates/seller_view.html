@@ -1,0 +1,143 @@
+{% extends "index.html" %} {% block title %}Seller{% endblock %} 
+{% block content %}
+<div class="row p-2 font">
+    <h3 >Seller page</h3>
+</div>
+<div class="row">
+    <div class="hstack gap-3 ps-4">
+        <div class="col rounded-circle mt-0">
+            {% if seller.photo_user %}
+            <img src="{{ url_for('static', filename='images/'+ seller.id|string + '/' + seller.photo_user )}}"alt="error loading user image"  class="mb-2 rounded-circle" style="height:10em;width:6em;"></img>
+            {% else %}
+            <img src="{{ url_for('static', filename='ico/user.svg' )}}"alt="error loading user image"  class="mb-2 rounded-circle" style="height:10em;width:6em;"></img>
+            {% endif %}
+        </div>
+        <div class="col-9">
+            <em>Username : &nbsp &nbsp {{ seller.username.upper() }}</em><br>
+            
+            Contact: 
+            <ul style="list-style-type: none;">
+            {% if contact %}
+                {% if contact.email %}
+                <li translate="no">
+                    <img src="{{ url_for('static', filename='ico/email.svg')}}" style="filter:invert(100%);">
+                    </img>
+                    <a href="mailto:{{ contact.email }}" subject="Aller new Contact">Email</a>
+                </li>
+                {% endif %}
+                {% if contact.number %}
+                <li>
+                    <img src="{{ url_for('static', filename='ico/phone.svg')}}" style="filter:invert(100%);">
+                    </img>
+                    Number: {{ contact.number }}
+                </li>
+                {% endif %}
+                {% if contact.wallet %}
+                <li>
+                    <img src="{{ url_for('static', filename='ico/coin.svg')}}" style="filter:invert(100%);">
+                    </img>
+                    Wallet: {{ contact.wallet[-1] }}
+                </li>
+                {% endif %}
+                {% if contact.social_name %}
+                <li translate="no">
+                    <img src="{{ url_for('static', filename='ico/link-45deg.svg')}}"  style="filter:invert(100%);">
+                    </img>
+                    <a href="{{contact.social_link}}">{{ contact.social_name}}</a>
+                </li>
+                {% endif %}
+                {% if contact.social2_name %}
+                <li translate="no">
+                    <img src="{{ url_for('static', filename='ico/link-45deg.svg')}}" style="filter:invert(100%);">
+                    </img>
+                    <a href="{{contact.social2_link}}"></a>
+                </li>
+                {% endif %}    
+            {% else %}
+                <li>No contact saved</li>
+            {% endif %}
+            </ul><br>
+            
+        </div>
+
+    </div>
+    <div class="row">
+        <em class="font">Bio :</em><br>
+        <div class="row text-center">
+            <em> {{ bio.bio }}   </em><br>
+
+        </div>
+    </div>
+
+</div>
+<div class="font">
+    <h4>Products :</h4>
+</div>
+{% for i in seller_prod %}
+
+<div class="row p-2">
+    
+    <div class="row px-4 py-0">
+        <div class="col-3 shadow">
+            
+          
+            <div id="carouselExample{{i.id}}" class="carousel slide">
+                <div class="carousel-inner">
+                    {% for p in i.photo %}
+                    <div class="carousel-item active">
+                        
+                        <img src="{{ url_for('static', filename='images/' + i.seller.id|string + '/' + p) }}" style="height: 12.5em;width: 100%;"/> 
+                    
+                    </div>
+                    {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample{{i.id}}" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExample{{i.id}}" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+        <div class="col-9 ps-1" style="height: 12.5rem;background-color:slategray;color:lightgray;">
+            <div class="p-0 m-0">
+                <h5>Name:{{ i.name[:77] }}</h5>
+            </div>
+            <div class="p-0" style=" margin-top:-.9em;">
+                <em style="font-size: .85rem;">Description : {{ i.description[:100] }}</em>
+                <br><p style="font-size: .7rem;">date of pubblication:{{ i.date_posted.strftime('%Y -%h -%d') }}</p>
+            </div>
+            <div style="margin-top: -1em;">
+                <em>Cost :{{ i.price }}$ </em>
+                
+            </div>
+            <div class="col p-2">
+            
+                <button class="btn-outline-info p-0 shadow bg-success bg-opacity-10" style="width:2em;height: 2em;">
+                    <a href="/product/{{i.id}}"><img src="{{ url_for('static', filename='ico/arrow.svg')}}"style="width:2em;height:em;border-radius:50%;margin-left:-.50em;margin-top:-.30em"></img>
+                    </a>
+                </button>
+            </div>
+            <div class="p-0 position-absolute bottom-0 start-50 translate-middle-x mb-2" >
+                <form method="POST" class="w-50 ">
+                    <div class="hstack gap-3 w-100" >
+                      <input type="number" name="qnt" id="qnt" min="1" class="border border-primary shadow  bg-body-tertiary rounded w-1" style="font-size:1em;height:2em; margin-right:2em;margin-top:.4em">
+                      <input type="hidden" name="code" value="{{ i.id }}">
+                      <div class="vr"></div>
+                      <input type="submit" name="buyNowSellerView" class="btn btn-success btn-md shadow font p-1 w-100" value="Buy now!" style="height: 2em;">
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+       
+    </div><br> 
+    
+</div><br>
+{% else %}
+<h4 class="font">No products to show</h4>
+{% endfor %}
+
+{% endblock %}

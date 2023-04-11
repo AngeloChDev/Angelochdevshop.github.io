@@ -1,0 +1,21 @@
+{% extends "index.html" %} {% block title %}Write your bio{% endblock %} 
+{% block content %}
+<div class="col p-3 m-auto">
+    <form action="" method="post">
+        <div class="form-group font" style="width: 100%;">
+            <label for="bio_in"><h3>Write your bio:</h3></label>
+            <textarea
+                class="form-control border border-primary"
+                id="bio_in"
+                name="bio_in"
+                placeholder="Enter a biographi about you and your mode to sell"               
+                rows="5"
+            ></textarea>
+        </div><br>
+        <div>
+            <button type="submit" class="btn btn-primary ms-25">Add to Account</button>
+        </div>
+    </form>
+
+</div>
+{% endblock %}
