@@ -68,6 +68,40 @@
       </button>
     </div>
     {% endif %} {% endfor %} {% endif %} {% endwith %}
+    {% if user.is_authenticated %}
+    <div class="offcanvas offcanvas-start bg-base"  tabindex="-1" id="userSetting" aria-labelledby="offcanvasBottomLabel">
+      <div class="offcanvas-header">
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body small">
+        <div class="row p-2">
+          <a href="{{ url_for('change_log.changelog') }}" class="shadow btn p-2 btn btn-outline-danger w-2"><b class="fw-bolder"> Change Password</b></a>
+        </div>
+        <div class="row p-2">
+          <button onclick="show_cart()" class="shadow btn p-2 btn btn-outline-info w-2"><b class="fw-bolder">Cart</b></button>
+              
+        </div>
+        <div class="row p-2">
+          <a href="{{ url_for('utils.product') }}" class="shadow btn p-2 btn btn-outline-warning w-2"><b class="fw-bolder">Create Product</b></a>
+        </div>
+        <div class="row p-2">
+          <button onclick="show_product_list()" class="shadow btn p-2 btn btn-outline-success w-2"><b class="fw-bolder">Your Products</b></button>
+        </div>
+        <div class="row p-2">
+          <a href="{{ url_for('utils.order_history') }}" class="shadow btn p-2 btn btn-outline-info w-2"><b class="fw-bolder">Oreder</b></a>
+        </div>
+        <div class="row p-2">
+          <a href="{{ url_for('utils.bio') }}" class="shadow btn p-2 btn btn-outline-warning w-2"><b class="fw-bolder">Write your bio</b></a>
+        </div>
+        <div class="row p-2">
+          <a href="{{ url_for('utils.contact') }}" class="shadow btn p-2 btn btn-outline-warning w-2"><b class="fw-bolder">Add contact mode</b></a>
+        </div>
+        <div class="row p-2">
+          <a href="{{ url_for('utils.photo_user') }}" class="shadow btn p-2 btn btn-outline-warning w-2"><b class="fw-bolder">Add photo user</b></a>
+        </div>
+      </div>
+    </div>
+    {% endif %}
     <div class="row">
       <div class="col-9 p-2"><br>
         {% block content %} {% endblock %}

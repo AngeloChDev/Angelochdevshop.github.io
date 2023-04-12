@@ -9,7 +9,7 @@
             {% for p in prod.photo %}
             <div class="carousel-item active">
                 
-                <img src="{{ url_for('static', filename='images/' + prod.seller.id|string + '/' + p) }}"style="height: 45vh;width: 80%;margin-left:7vw;"/> 
+                <img src="{{ url_for('static', filename='images/' + prod.seller.id|string + '/products_photo/' + p) }}"style="height: 45vh;width: 80%;margin-left:7vw;"/> 
             
             </div>
             {% endfor %}

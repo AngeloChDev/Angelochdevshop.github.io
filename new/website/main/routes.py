@@ -59,17 +59,24 @@ def home():
                   flash('For this product are required some file media', category="error")
                   break
                myfile.save(path)
-               order = Order(product_id=selected.id, user_id=current_user.id,address=ord_address, email=ord_email,tel=ord_tel,pin=ord_pin,wallet=ord_wallet,quantity=ord_qnt, files=name)
+               order = Order(product_id=selected.id, user_id=current_user.id,obj_seller=selected.seller.id,address=ord_address, email=ord_email,tel=ord_tel,pin=ord_pin,wallet=ord_wallet,quantity=ord_qnt, files=name)
             else:
-               order = Order(product_id=selected.id, user_id=current_user.id,address=ord_address, email=ord_email,tel=ord_tel,pin=ord_pin,wallet=ord_wallet,quantity=ord_qnt)
+               order = Order(product_id=selected.id, user_id=current_user.id,obj_seller=selected.seller.id,address=ord_address, email=ord_email,tel=ord_tel,pin=ord_pin,wallet=ord_wallet,quantity=ord_qnt)
             db.session.add(order)  
             db.session.commit()
          session['CART'] = []
          o = []
          orders = []
          flash('register', category='success')
-      
-      return render_template('home.html',user=current_user,user_products=products_list,ord=o)
+      else:
+         orders = Order.query.filter_by(user_id=current_user.id).all()
+         contacts = list()
+         for i in orders:
+            contact = i.product.seller.contact
+            contacts.append(contact) 
+         return render_template('home.html',user=current_user,user_products=products_list,ord=o, user_orders= orders,seller_contacts=contacts)
+
+      return render_template('home.html',user=current_user,user_products=products_list,ord=o, user_orders= orders)
 
    return render_template('home.html', user=current_user, user_products=products_list)
 

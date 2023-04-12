@@ -1,7 +1,7 @@
 from flask import render_template, url_for, session, flash, redirect, request, Blueprint
 from flask_login import login_user, current_user, logout_user, login_required
 from website import db, bcrypt
-from website.models import User, Product, Bio, Contact
+from website.models import User, Product, Bio, Contact, Order
 from flask import current_app
 from werkzeug.utils import secure_filename
 import os
@@ -56,14 +56,16 @@ def bio():
     if request.method == 'POST':
         bio = request.form.get('bio_in')
         if not bio:
-            flash('text field empty', category='error')
+            flash('Text field empty', category='error')
         elif Bio_user:
             Bio_user.bio = bio
+            flash('New bio added', category='success')
             return redirect(url_for('main.home'), 202)
         else:    
             user_bio = Bio(user_id=current_user.id, bio=bio)
             db.session.add(user_bio)
             db.session.commit()
+            flash('Bio Added', category='success')
             return redirect(url_for('main.home'), 202)
 
     return render_template('bio.html', user=current_user)
@@ -71,19 +73,43 @@ def bio():
 @utils.route('/AddContact', methods=['GET', 'POST'])
 @login_required
 def contact():
-    if request.method == 'POST':
-        email = request.form.get('email')
-        number = request.form.get('number')
-        wallet = request.form.get('wallet_field')
-        s_link = request.form.get('social')
-        s_name = request.form.get('social_name')
-        s2_link = request.form.get('social2')
-        s2_name = request.form.get('social2_name')
-        wallet_list.append(wallet)
-        user_contact = Contact(user_id=current_user.id, email=email,number=number,wallet=wallet_list,social_name=s_name,social_link=s_link, social2_name=s2_name,social2_link=s2_link)
-        db.session.add(user_contact)
-        db.session.commit()
-        return redirect(url_for('main.home'))
+    try:
+        if request.method == 'POST':
+            email = request.form['email']
+            number = request.form['number']
+            wallet = request.form['wallet_field']
+            s_link = request.form['social']
+            s_name = request.form['social_name']
+            s2_link = request.form['social2']
+            s2_name = request.form['social2_name']
+            user_contact = Contact.query.filter_by(user_id=current_user.id).first()
+            
+            if user_contact:
+                print('found')
+                if email:
+                    user_contact.email = email
+                elif wallet:
+
+                    user_contact.wallet = wallet
+                elif number:
+                    user_contact.number = number
+                elif s_name:
+                    user_contact.social_name = s_name
+                    user_contact.social_link = s_link
+                elif s2_name:
+                    user_contact.social2_name = s2_name
+                    user_contact.social2_link = s2_link
+                db.session.commit()
+            elif not user_contact:
+                print('not found')
+                user_contact = Contact(user_id=current_user.id, email=email,number=number,wallet=wallet_list,social_name=s_name,social_link=s_link, social2_name=s2_name,social2_link=s2_link)
+                db.session.add(user_contact)
+                db.session.commit()
+                return redirect(url_for('main.home'))
+    except:
+        redirect(404)
+    finally:
+        pass
 
     return render_template('contact.html', user= current_user)
 
@@ -103,3 +129,10 @@ def photo_user():
 
     return render_template('photo_user.html', user= current_user)
 
+@utils.route('/home/Navigate', methods=['GET', 'POST'])
+@login_required
+def order_history():
+     
+    product = Product.query.filter_by(user_id=current_user.id).all()
+    orders = Order.query.filter_by(user_id=current_user.id).all()
+    return render_template('order.html', user=current_user,user_products=product,user_orders= orders)
