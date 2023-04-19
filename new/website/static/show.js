@@ -26,3 +26,14 @@ function myShow() {
     } else {
         x.style.display = "none";
     }};
+
+function show_orders() {
+    var x = document.getElementById("orders_div");
+    
+    if (x.style.display === "none") {
+        x.style.display = "block";
+        
+    } else {
+        x.style.display = "none";
+    }};
+

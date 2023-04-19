@@ -34,7 +34,7 @@
       >
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbar">
+      <div class="collapse navbar-collapse bg-base">
         <div class="navbar-nav">
 
           
@@ -75,29 +75,35 @@
       </div>
       <div class="offcanvas-body small">
         <div class="row p-2">
-          <a href="{{ url_for('change_log.changelog') }}" class="shadow btn p-2 btn btn-outline-danger w-2"><b class="fw-bolder"> Change Password</b></a>
+          <button onclick="show_cart()" class="h-o shadow btn p-2 btn btn-outline-info w-1"><b class="fw-bolder">Cart</b></button>     
+        </div>
+        <hr>
+        <div class="row p-2">
+          <a href="{{ url_for('utils.product') }}" class="h-o shadow btn p-2 btn btn-outline-success w-2"><b class="fw-bolder">Create Product</b></a>
         </div>
         <div class="row p-2">
-          <button onclick="show_cart()" class="shadow btn p-2 btn btn-outline-info w-2"><b class="fw-bolder">Cart</b></button>
-              
+          <a href="{{ url_for('homeInfo.infoProduct') }}" class="h-o shadow btn p-2 btn btn-outline-info w-2"><b class="fw-bolder">Product</b></a>
         </div>
         <div class="row p-2">
-          <a href="{{ url_for('utils.product') }}" class="shadow btn p-2 btn btn-outline-warning w-2"><b class="fw-bolder">Create Product</b></a>
+          <a href="{{ url_for('homeInfo.infoBuyed') }}" class="h-o shadow btn p-2 btn btn-outline-info w-2"><b class="fw-bolder">Buyed</b></a>
         </div>
         <div class="row p-2">
-          <button onclick="show_product_list()" class="shadow btn p-2 btn btn-outline-success w-2"><b class="fw-bolder">Your Products</b></button>
+          <a href="{{ url_for('homeInfo.infoSelled') }}" class="h-o shadow btn p-2 btn btn-outline-info w-2"><b class="fw-bolder">Selled</b></a>
         </div>
         <div class="row p-2">
-          <a href="{{ url_for('utils.order_history') }}" class="shadow btn p-2 btn btn-outline-info w-2"><b class="fw-bolder">Oreder</b></a>
+          <a href="{{ url_for('utils.bio') }}" class="h-o shadow btn p-2 btn btn-outline-warning w-2"><b class="fw-bolder">Write your bio</b></a>
         </div>
         <div class="row p-2">
-          <a href="{{ url_for('utils.bio') }}" class="shadow btn p-2 btn btn-outline-warning w-2"><b class="fw-bolder">Write your bio</b></a>
+          <a href="{{ url_for('utils.contact') }}" class="h-o shadow btn p-2 btn btn-outline-warning w-2"><b class="fw-bolder">Add contact mode</b></a>
         </div>
         <div class="row p-2">
-          <a href="{{ url_for('utils.contact') }}" class="shadow btn p-2 btn btn-outline-warning w-2"><b class="fw-bolder">Add contact mode</b></a>
+          <a href="{{ url_for('utils.photo_user') }}" class="h-o shadow btn p-2 btn btn-outline-warning w-2"><b class="fw-bolder">Add photo user</b></a>
         </div>
         <div class="row p-2">
-          <a href="{{ url_for('utils.photo_user') }}" class="shadow btn p-2 btn btn-outline-warning w-2"><b class="fw-bolder">Add photo user</b></a>
+          <a href="{{ url_for('utils.authenticate') }}" class="h-o shadow btn p-2 btn btn-outline-success w-2"><b class="fw-bolder">Authenticate</b></a>
+        </div>
+        <div class="row p-2">
+          <a href="{{ url_for('change_log.changelog') }}" class="h-o shadow btn p-2 btn btn-outline-danger w-2"><b class="fw-bolder"> Change Password</b></a>
         </div>
       </div>
     </div>

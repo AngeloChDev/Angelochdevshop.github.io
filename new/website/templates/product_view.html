@@ -27,11 +27,11 @@
 <div class="row ps-4 pt-3">
     <p>Seller :<em class="ms-2">{{ prod.seller.username }}</em></p>
 </div>
-<div class="row ps-3">
-    <p>Description :</p><em>{{ prod.description }}</em>
-</div><br><br>
 <div class="row ms-1 p-2">
     <p>Cost :<em class="ms-2">{{ prod.price }} $</em></p>
+</div>
+<div class="row ps-3">
+    <p>Description :</p><em>{{ prod.description }}</em>
 </div>
 {% if user.id == seller.id %}
 <div class="hstack gap-3 border border-info-subtle p-2 bg-info bg-opacity-10 rounded ms-2">

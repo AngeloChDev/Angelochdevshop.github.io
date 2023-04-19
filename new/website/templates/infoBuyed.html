@@ -1,0 +1,163 @@
+{% extends "home.html" %} {% block title %}Home info buyed{% endblock %}
+{% block infoBuyed%}
+<div class="row" id="orders_div" >
+    {% if buyed is defined %} 
+    <div class="row text-center fs-5">
+        <h1>Your order</h1>
+    </div>
+    <!--AREA ORDERS--> 
+    <div class="col p-1">
+        <div class="row t-zoom shadow tb ps-4 p-1 m-0">
+            {% for i in buyed %}
+            <!-- TABE ORDERS-->
+            {% set seller = i.product.seller %}
+            {% if i.product.DELETED%}
+            <div class="row  m-1 td-zoom btn-sm font border border-danger bg-success bg-opacity-10"  data-bs-toggle="offcanvas" data-bs-target="#{{i.id}}orderDeta-id"aria-controls="offcanvasBottom">{{ loop.index }}
+            {%else%}
+            <div class="row  m-1 td-zoom btn-sm font border border-success-subtle bg-success bg-opacity-10"  data-bs-toggle="offcanvas" data-bs-target="#{{i.id}}orderDeta-id"aria-controls="offcanvasBottom">{{ loop.index }}
+            {%endif%}
+            </div>
+            <!--WINDOW DETAIL ORDERS-->
+            <div class="offcanvas offcanvas-bottom bg-base" style="height:80vh;" tabindex="-1" id="{{i.id}}orderDeta-id" aria-labelledby="offcanvasBottomLabel">
+                <div class="offcanvas-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <!-- ORDER DETAILS area-->
+                <div class="offcanvas-body small lightgrey">
+                    <div class="row font fs-5 blue">
+                        <h5>{{i.product.name}}</h5>
+                    </div>
+                    <!-- ORDER detail -->
+                    <div class="row fs-6">
+                        <span class="blue font">Order unicode :<b class="yellow">{{ i.pin}}</b></span>
+                        <!-- ORDER  SELLER detail -->
+                        <div class="col-auto p-3 ps-1 m-2">
+                            <p>Quantity : {{ i.quantity}}<br>
+                                Cost : {{i.quantity*i.product.price}}$<br>
+                                Seller username : {{seller.username}}<br>
+                                Seller id : {{seller.id}}<br>
+                                {% if seller.contact %}
+                                {% set contact = seller.contact %}
+                                {% for i in contact%}
+                                {% if i.email %}
+                                <span translate="no">
+                                    <img src="{{ url_for('static', filename='ico/email.svg')}}" style="filter:invert(100%);">
+                                    </img>
+                                    <a href="mailto:{{ i.email }}" subject="Aller new Contact">Email</a>
+                                </span><br>
+                                {% endif %}
+                                {% if i.wallet %}
+                                <span>
+                                    <img src="{{ url_for('static', filename='ico/coin.svg')}}" style="filter:invert(100%);">
+                                    </img>
+                                    Wallet: {{ i.wallet }}
+                                </span><br>
+                                {% endif %}
+                                {% if i.number %}
+                                <span>
+                                    <img src="{{ url_for('static', filename='ico/phone.svg')}}" style="filter:invert(100%);">
+                                    </img>
+                                    Number: {{ i.number }}
+                                </span><br>
+                                {% endif %}
+                                {% if i.social_name %}
+                                <span translate="no">
+                                    <img src="{{ url_for('static', filename='ico/link-45deg.svg')}}"  style="filter:invert(100%);">
+                                    </img>
+                                    <a href="{{i.social_link}}">{{ i.social_name}}</a>
+                                </span><br>
+                                {% endif %}
+                                {% if i.social2_name %}
+                                <span translate="no">
+                                    <img src="{{ url_for('static', filename='ico/link-45deg.svg')}}"  style="filter:invert(100%);">
+                                    </img>
+                                    <a href="{{i.social2_link}}">{{ i.social2_name}}</a>
+                                </span><br>
+                                {% endif %}
+                                {% endfor %}
+                                {% else %}
+                                <span> this seller has no contact mode registered..</span>
+                                {% endif%}
+                            </p>
+                        </div>
+                        <!-- ORDER  USER detail -->
+                        <div class="col-auto p-3 m-auto mt-0">
+                            <p><span class="blue">Your contact for this order</span><br>{% if i.email %}
+                                <span translate="no">
+                                    <img src="{{ url_for('static', filename='ico/email.svg')}}" style="filter:invert(100%);">
+                                    </img>
+                                    <a href="mailto:{{ i.email }}" subject="Aller new Contact">Email</a>
+                                </span><br>
+                                {% endif %}
+                                {% if i.wallet %}
+                                <span>
+                                    <img src="{{ url_for('static', filename='ico/coin.svg')}}" style="filter:invert(100%);">
+                                    </img>
+                                    Wallet: {{ i.wallet }}
+                                </span><br>
+                                {% endif %}
+                                {% if i.number %}
+                                <span>
+                                    <img src="{{ url_for('static', filename='ico/phone.svg')}}" style="filter:invert(100%);">
+                                    </img>
+                                    Phone: {{ i.number }}
+                                </span><br>
+                                {% endif %}
+                                {% if i.buyer.contact.social_name %}
+                                <span translate="no">
+                                    <img src="{{ url_for('static', filename='ico/link-45deg.svg')}}"  style="filter:invert(100%);">
+                                    </img>
+                                    <a href="{{i.buyer.contact.social_link}}">{{ i.buyer.contact.social_name}}</a>
+                                </span><br>
+                                {% endif %}
+                                {% if i.buyer.contact.social2_name %}
+                                <span translate="no">
+                                    <img src="{{ url_for('static', filename='ico/link-45deg.svg')}}"  style="filter:invert(100%);">
+                                    </img>
+                                    <a href="{{i.buyer.contact.social_link}}">{{ i.buyer.contact.social2_name}}</a>
+                                </span><br>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                    <!-- ORDER  PHOTOS -->
+                    <div class="row">
+                        <div id="carouselExample{{i.id}}" class="carousel slide">
+                            <div class="carousel-inner" style="margin-left:12vw;">
+                                {% for p in i.product.photo %}
+                                <div class="carousel-item active" >
+                                    
+                                    <img src="{{ url_for('static', filename='images/' + i.product.seller.id|string + '/products_photo/' + p) }}" id="{{i.id}}" style="height:70vh;width:70vw;"/> 
+                                
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample{{i.id}}" data-bs-slide="prev">
+                              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                              <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample{{i.id}}" data-bs-slide="next">
+                              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                              <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row font lightgrey p-3 m-3">
+                        <h5>Product desccription :</h5><p>{{i.product.description}}
+                        </p>
+                    </div>
+                    {{i.id}}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <div class="row">
+        <h4 class="font blue">You made no orders</h4>
+    </div>
+    {% endif %} 
+</div>
+
+
+{% endblock %}

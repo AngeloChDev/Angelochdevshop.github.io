@@ -1,0 +1,14 @@
+{% extends "home.html" %} {% block title %}Authenticate your account{% endblock %}
+{% block authenticate_view%}
+<div class="col font p-3 pt-0">
+<h3 class="fs-4">Authenticate your account</h3>
+
+
+<span translate="no">
+    <img src="{{ url_for('static', filename='ico/email.svg')}}" style="filter:invert(100%);">
+    </img>
+    <a href="mailto:infouserCryptoShop@gmail.com" >Email to info service</a>
+</span><br>
+</div>
+
+{% endblock %}

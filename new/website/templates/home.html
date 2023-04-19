@@ -39,12 +39,12 @@
                             </tr>
                         </thead>
                         <tbody class="table-group-divider">
-                            {% if ord %}
-                            {% for i in ord %}
+                            {% if cart %}
+                            {% for i in cart %}
                             <tr>
-                                <td>{{ i['product']['name'][:10] }}</td>
+                                <td>{{ i['product']['product_name'][:10] }}</td>
                                 <td>{{ i['quantity'] }}</td>
-                                <td>{{ i['quantity']*i['product']['price'] }}</td>
+                                <td>{{ i['quantity']*i['product']['product_price'] }}</td>
                             </tr>    
                             {% else %}
                             <tr>
@@ -68,7 +68,7 @@
    
 </div>  
 <!-- CART INSERT DETAIL DIV -->
-{% if ord %}
+{% if cart %}
 <div class="col p-1 shadow" id="in_data_row" style="display:none;text-align: center;">
     <form method="POST" enctype="multipart/form-data">
 
@@ -89,18 +89,18 @@
                     style="font-size:1em;"
                 />
             </div>
-            {% for i in ord%}
+            {% for i in cart%}
             <div class="row">
                 <!-- CART HIDDEN DETAILS -->
                 <div class="row">
-                    <input type="hidden" name="order_id" id="order_id" value="{{ i['product']['id'] }}">
-                    <input type="hidden" name="order_qnt" id="order_qnt" value="{{ i['quantity'] }}">
+                    <input type="hidden" name="order_id" id="order_id" value="{{ i.product.product_id }}">
+                    <!--<input type="hidden" name="order_qnt" id="order_qnt" value="{{ i['quantity'] }}">-->
                 </div>
                 <!-- CART IN FILES -->
-                {% if i['product']['require_file'] %}
+                {% if i.product.product_require_file %}
                 <div class="col-auto p-5 my-0 py-0">
-                    <label for="file-{{ i['product']['id'] }}" class="fs-6">file needed for:<br> {{ i['product']['name']}}</label>
-                    <input type="file" name="file-{{i['product']['id']}}" id="file-{{i['product']['id']}}" class="btn-primary"style="width:4.8em"><br>
+                    <label for="file-{{ i.product.product_id }}" class="fs-6">file needed for:<br> {{ i.product.product_name[:10]}}</label>
+                    <input type="file" name="file-{{i.product.product_id}}" id="file-{{i.product.product_id}}" class="btn-primary"style="width:4.8em"><br>
                 </div>
                 {% endif %}
             </div>
@@ -118,11 +118,11 @@
             <label for="order_tel">Write here aphone number where receive seller contact:</label>
             <input type="tel" name="order_tel" id="order_tel" class="form-control-lg border border-primary" >
         </div>
-        <div class="card border-success m-3 p-3  dt" id="pay_data">
+        <div class="card border-success m-3 p-3 bg-base" id="pay_data">
         
             <!-- CART ORDER UNICODE -->
             <h5 class="tb font">Num shipment</h5>
-            <textarea name="order_pin" id="order_pin" cols="22" class="form-control-lg border border-primary" >{% print(ord_num) %}</textarea>
+            <textarea name="order_pin" id="order_pin" cols="22" class="form-control-lg border border-primary" ></textarea>
             <!-- CART IN WALLET -->
             <div class="input-group mt-3">
                 
@@ -139,227 +139,10 @@
 {% endif %}
 
 
-<br><br><br> 
-<!-- PRODUCTS USER DIV -->
-<div id="product_list_div" name="product_list" class="row p-3" style="display: none;">
-
-{% for i in user_products %}
-
-    <div class="row p-2">
-        <!-- PRODUCTS USER DIV PHOTOS -->
-        <div class="col-3 shadow">
-            <div id="carouselExample{{i.id}}" class="carousel slide">
-                <div class="carousel-inner">
-                    {% for p in i.photo %}
-                    <div class="carousel-item active">
-                        
-                        <img src="{{ url_for('static', filename='images/' + i.seller.id|string + '/' + p) }}" class="c{{i.id}}"id="{{i.name}}"style="height: 9.5rem;width: 100%;"/> 
-                    
-                    </div>
-                    {% endfor %}
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample{{i.id}}" data-bs-slide="prev">
-                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                  <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExample{{i.id}}" data-bs-slide="next">
-                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                  <span class="visually-hidden">Next</span>
-                </button>
-            </div>
-        </div>
-        <!-- PRODUCTS USER DIV DETAILS -->
-        <div class="col-9 ps-1" style="height: 9.5rem;background-color:slategray;color:lightgray;">
-            <div class="p-0 m-0">
-                <h5>Name:{{ i.name[:27] }}</h5>
-            </div>
-            <div class="p-0" style=" margin-top:-.9em;">
-                <em style="font-size: .85rem;">Description : {{ i.description[:77] }}</em>
-                <br><p style="font-size: .7rem;">date of pubblication:{{ i.date_posted.strftime('%Y -%h -%d') }}</p>
-            </div>
-            <div style="margin-top: -1em;">
-                <em>Cost :{{ i.price }}$ </em>
-                
-            </div>
-            <div class="hstack gap-3 position-absolute top-0 end-0 p-3" >
-                <!-- PRODUCTS USER SOW -->
-                <button class="btn-outline-info p-0 shadow" style="width:2.5vw;height: 5.3vh;">
-                    <a href="/product/{{i.id}}"><img src="{{ url_for('static', filename='ico/arrow.svg')}}"style="width:3.3vw;height: 4.7vh;border-radius:50%;margin-left:-.9em;"></img>
-                    </a>
-                </button>
-            
-                <!-- PRODUCTS USER DELETE -->
-                <button class="btn-outline-info p-0 shadow " style="width:2.5vw;height: 5.7vh;">
-                    <a href="/product/{{i.id}}/delete"><img src="{{ url_for('static', filename='ico/trash.svg')}}"style="width:3.3vw;height:4.4vh;border-radius:50%;margin-left:-.7em;"></img>
-                    </a>
-                </button>
-            </div>
-        </div>
-    </div><br>
-{% else %}
-    <h4 class="font">No products to show</h4>
-{% endfor %}
-</div>
-<!--DIV  ORDERS--> 
-<div class="row" style=display:none">
-    <div class="row text-center fs-5">
-        <h1>Your order</h1>
-    </div>
-    
-    <!--AREA ORDERS-->   
-    <div class="col p-1">
-        <div class="row t-zoom shadow tb ps-4 p-1 m-0" style="border-radius: 10% solid red 2px;">
-    
-
-            {% for i in user_orders %}
-            <!-- TABE ORDERS-->
-            {% set seller = i.product.seller %}
-            {% set contact = seller.contact %}
-            <div class="row  m-1 td-zoom btn-lg p-4  border border-success-subtle bg-success bg-opacity-10"  data-bs-toggle="offcanvas" data-bs-target="#{{i.id}}orderDeta-id"aria-controls="offcanvasBottom">{{ loop.index }}
-
-            </div>
-            <!--WINDOW DETAIL ORDERS-->
-            <div class="offcanvas offcanvas-bottom bg-base" style="height:80vh;" tabindex="-1" id="{{i.id}}orderDeta-id" aria-labelledby="offcanvasBottomLabel">
-                <div class="offcanvas-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <!-- ORDER name tite area-->
-                <div class="offcanvas-body small">
-                    <div class="row font fs-5 lightgrey">
-                        <h5 class="blue">{{i.product.name}}</h5>
-                    </div>
-                    <!-- ORDER detail -->
-                    <div class="row">
-                        <!-- ORDER  SELLER detail -->
-                        <div class="col-auto p-1 lightgrey m-auto">
-                            
-                            <p><span class="blue">Order unicode :</span> {{i.pin}}<br>
-                                Quantity : {{ i.quantity}}<br>
-                                Cost : {{i.quantity*i.product.price}}$<br>
-                                Seller username : {{seller.username}}<br>
-                                Seller id : {{seller.id}}<br>
-                                {% for i in contact%}
-                                {% if i.email %}
-                                <span translate="no">
-                                    <img src="{{ url_for('static', filename='ico/email.svg')}}" style="filter:invert(100%);">
-                                    </img>
-                                    <a href="mailto:{{ i.email }}" subject="Aller new Contact">Email</a>
-                                </span><br>
-                                {% endif %}
-                                {% if i.wallet %}
-                                <span>
-                                    <img src="{{ url_for('static', filename='ico/coin.svg')}}" style="filter:invert(100%);">
-                                    </img>
-                                    Wallet: {{ i.wallet }}
-                                </span><br>
-                                {% endif %}
-                                {% if i.number %}
-                                <span>
-                                    <img src="{{ url_for('static', filename='ico/phone.svg')}}" style="filter:invert(100%);">
-                                    </img>
-                                    Number: {{ i.number }}
-                                </span><br>
-                                {% endif %}
-                                {% if i.social_name %}
-                                <span translate="no">
-                                    <img src="{{ url_for('static', filename='ico/link-45deg.svg')}}"  style="filter:invert(100%);">
-                                    </img>
-                                    <a href="{{i.social_link}}">{{ i.social_name}}</a>
-                                </span><br>
-                                {% endif %}
-                                {% if i.social2_name %}
-                                <span translate="no">
-                                    <img src="{{ url_for('static', filename='ico/link-45deg.svg')}}"  style="filter:invert(100%);">
-                                    </img>
-                                    <a href="{{i.social2_link}}">{{ i.social2_name}}</a>
-                                </span><br>
-                                {% endif %}
-                                {% endfor %}
-                            </p>
-                        </div>
-                        <!-- ORDER  USER detail -->
-                        <div class="col-auto p-1 lightgrey m-auto">
-                            <p><span class="blue">Your contact for this order</span><br>
-                                
-                                {% if i.email %}
-                                <span translate="no">
-                                    <img src="{{ url_for('static', filename='ico/email.svg')}}" style="filter:invert(100%);">
-                                    </img>
-                                    <a href="mailto:{{ i.email }}" subject="Aller new Contact">Email</a>
-                                </span><br>
-                                {% endif %}
-                                {% if i.wallet %}
-                                <span>
-                                    <img src="{{ url_for('static', filename='ico/coin.svg')}}" style="filter:invert(100%);">
-                                    </img>
-                                    Wallet: {{ i.wallet }}
-                                </span><br>
-                                {% endif %}
-                                {% if i.number %}
-                                <span>
-                                    <img src="{{ url_for('static', filename='ico/phone.svg')}}" style="filter:invert(100%);">
-                                    </img>
-                                    Phone: {{ i.number }}
-                                </span><br>
-                                {% endif %}
-                                {% if i.buyer.contact.social_name %}
-                                <span translate="no">
-                                    <img src="{{ url_for('static', filename='ico/link-45deg.svg')}}"  style="filter:invert(100%);">
-                                    </img>
-                                    <a href="{{i.buyer.contact.social_link}}">{{ i.buyer.contact.social_name}}</a>
-                                </span><br>
-                                {% endif %}
-                                {% if i.buyer.contact.social2_name %}
-                                <span translate="no">
-                                    <img src="{{ url_for('static', filename='ico/link-45deg.svg')}}"  style="filter:invert(100%);">
-                                    </img>
-                                    <a href="{{i.buyer.contact.social_link}}">{{ i.buyer.contact.social2_name}}</a>
-                                </span><br>
-                                {% endif %}
-                            </p>
-                        </div>
-                    </div>
-                    <!-- ORDER  PHOTOS -->
-                    <div class="row">
-                        <div id="carouselExample{{i.id}}" class="carousel slide">
-                            <div class="carousel-inner ms-11">
-                                {% for p in i.product.photo %}
-                                <div class="carousel-item active">
-                                    
-                                    <img src="{{ url_for('static', filename='images/' + i.product.seller.id|string + '/products_photo/' + p) }}" id="{{i.id}}"style="height: 9.5rem;width: 60%;"/> 
-                                
-                                </div>
-                                {% endfor %}
-                            </div>
-                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample{{i.id}}" data-bs-slide="prev">
-                              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                              <span class="visually-hidden">Previous</span>
-                            </button>
-                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample{{i.id}}" data-bs-slide="next">
-                              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                              <span class="visually-hidden">Next</span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="row font lightgrey p-3 m-3">
-                        <h5>Product desccription :</h5><p>{{i.product.description}}
-                        </p>
-                    </div>
-                    {{i.id}}
-                </div>
-            </div>
-        
-            {% endfor %}
-
-
-        </div>
-        
-    
-       
-        
-    
-    </div>
-</div>
+{%block infoBuyed %}{% endblock %}
+{%block infoSelled %}{% endblock %}
+{%block infoProduct %}{% endblock %}
+{%block authenticate_view %}{% endblock %}
 
 
 <script type="text/javascript" src="{{ url_for('static', filename='show.js')}}">     

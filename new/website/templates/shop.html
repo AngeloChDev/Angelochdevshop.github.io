@@ -64,17 +64,12 @@
           </div>
           <div class="col p-2">
             <button class="btn btn-outline-primary p-0 shadow" style="border-radius: 50%;">
-              <a href="/seller/{{ i.seller.id }}">
+              <a href="/seller/{{ i.seller.username }}">
                 <img src="{{ url_for('static', filename='images/'+ i.seller.id|string + '/' + i.seller.photo_user )}}"alt="error loading user image" onerror="this.src='static/images/seller.png'" style="width:2.5vw;height: 7vh;border-radius:50%;margin-top: -.25em;"></img>
               </a>
             </button>
           </div>
         </div><br>
-   <!-- <div class="p-0" style="margin-top: -2.7em;">
-          <em style="font-size: .75em;color: #fff;">Description :<br>{{ i.description[:90] }}{{ i.seller.username }}
-            
-          </em>
-        </div><br>-->
         <div class="row p-2" style="margin-top: -2em;" >
           <p>Cost {{ i.price }}$ </p>
         </div><br>

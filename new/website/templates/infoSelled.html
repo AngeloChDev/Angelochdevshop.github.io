@@ -1,0 +1,113 @@
+{% extends "home.html" %}{% block title %}Home info selled{% endblock %}
+{% block infoSelled %}
+{% if not selled%}
+
+<h4 class="font">No Selled to show</h4>
+{% else%}
+<div class="row text-center fs-6">
+
+    <h1 class="fs-4">Your selled</h1>
+</div>
+<div class="row bg-success bg-opacity-10" id="selled_div">
+   
+    <div class="row t-zoom shadow m-0 ps-4 p-1">
+        {%for i in selled %}
+        {% if i.product.DELETED%}
+        <div class="row  m-1 td-zoom btn-sm font border border-danger bg-danger bg-opacity-50"  data-bs-toggle="offcanvas" data-bs-target="#{{i.id}}selledDeta-id"aria-controls="offcanvasBottom">{{ loop.index }}
+        {%else%}
+        <div class="row  m-1 td-zoom btn-sm font border border-success-subtle bg-warning bg-opacity-50"  data-bs-toggle="offcanvas" data-bs-target="#{{i.id}}selledDeta-id"aria-controls="offcanvasBottom">{{ loop.index }}
+        {%endif%}
+        </div>
+            
+        <div class="offcanvas offcanvas-bottom bg-base" style="height:80vh;" tabindex="-1" id="{{i.id}}selledDeta-id" aria-labelledby="offcanvasBottomLabel">
+            <div class="offcanvas-header">
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body row small lightgrey">
+                <div class="row font fs-5 blue">
+                    <h5>{{i.product.name}}</h5>
+                </div>
+                <!-- ORDER detail -->
+                <div class="row fs-6">
+                    <span class="blue font">Order unicode :<b class="yellow">{{ i.pin}}</b></span>
+                    <div class="col-auto p-3  ps-1 m-2">
+                        <p>Quantity : {{ i.quantity}}<br>
+                            Cost : {{i.quantity*i.product.price}}$
+                        </p>
+                    </div>
+                    <!-- ORDER  BUYER detail -->
+                    <div class="col-auto p-3 m-auto mt-0">
+                        <p><span class="blue">Buyer</span><br>
+                            {% if i.wallet %}
+                            <img src="{{ url_for('static', filename='ico/coin.svg')}}" style="filter:invert(100%);">
+                            </img>
+                            Wallet: {{ i.wallet }}<br>
+                            {% endif %}
+                            {% if i.email %}
+                            <img src="{{ url_for('static', filename='ico/email.svg')}}" style="filter:invert(100%);">
+                            </img>
+                            <a href="mailto:{{ i.email }}" subject="Aller new Contact">Email</a><br>
+                            {% endif %}
+                            {% if i.address %}
+                            Address: {{ i.address }}<br>
+                            {% endif %}
+                            {% if i.number %}
+                            <img src="{{ url_for('static', filename='ico/phone.svg')}}" style="filter:invert(100%);">
+                            </img>
+                            Phone: {{ i.number }}<br>
+                            {% endif %}
+                            {% if i.buyer.contact.social_name %}
+                            <span translate="no">
+                                <img src="{{ url_for('static', filename='ico/link-45deg.svg')}}"  style="filter:invert(100%);">
+                                </img>
+                                <a href="{{i.buyer.contact.social_link}}">{{ i.buyer.contact.social_name}}</a>
+                            </span><br>
+                            {% endif %}
+                            {% if i.buyer.contact.social2_name %}
+                            <span translate="no">
+                                <img src="{{ url_for('static', filename='ico/link-45deg.svg')}}"  style="filter:invert(100%);">
+                                </img>
+                                <a href="{{i.buyer.contact.social_link}}">{{ i.buyer.contact.social2_name}}</a>
+                            </span><br>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+                <!-- ORDER  PHOTOS -->
+                <div class="row">
+                    <div id="carouselExample{{i.id}}" class="carousel slide">
+                        <div class="carousel-inner" style="margin-left:12vw;">
+                            {% for p in i.product.photo %}
+                            <div class="carousel-item active">
+                                
+                                <img src="{{ url_for('static', filename='images/' + i.product.seller.id|string + '/products_photo/' + p) }}" id="{{i.id}}"style="height:70vh;width:70vw;"/> 
+                            
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample{{i.id}}" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample{{i.id}}" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="row font lightgrey p-3 m-3">
+                    <h5>Product desccription :</h5><br><p>{{i.product.description}}
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        {%endfor%}
+    </div>
+</div>
+
+{% endif %}
+
+
+
+{% endblock %}

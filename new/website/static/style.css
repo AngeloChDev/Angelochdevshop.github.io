@@ -16,12 +16,16 @@ body{
 .blue{
   color:royalblue;
 }
-.dt{
-  background-color: #1c1c21;
+.yellow{
+  color:rgb(148, 165, 131);
 }
 .zoom:active {
   width: 70px;
   height: 74px;
+}
+
+.h-o:hover{
+  opacity: 0.6;
 }
 
 .t-zoom {
@@ -43,14 +47,11 @@ body{
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
 }
 
-
-
-
 .font{
   font-family: Gabriola, Cambria, Cochin, Georgia, Times, 'Times New Roman', serif  , fantasy;
   text-align: center;
-
 }
+
 .ms-11{
   margin-left: 12.5vw;
 }
@@ -59,9 +60,6 @@ body{
   margin-left: 25vw;
 }
 
-#navbar{
-  background-color: #1c1c21;
-}
 .w-1{
   width: 13vw;
 }
