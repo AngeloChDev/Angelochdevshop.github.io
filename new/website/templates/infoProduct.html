@@ -1,0 +1,65 @@
+{% extends "home.html" %} {% block title %}Home info product{% endblock %}
+{% block infoProduct%}
+
+<!-- PRODUCTS USER DIV -->
+<div id="product_list_div" name="product_list" class="row p-3">
+
+    {% for i in user_products %}
+    
+    <div class="row p-2">
+        <!-- PRODUCTS USER DIV PHOTOS -->
+        <div class="col-3 shadow">
+            <div id="carouselExample{{i.id}}" class="carousel slide">
+                <div class="carousel-inner">
+                    {% for p in i.photo %}
+                    <div class="carousel-item active">
+                        
+                        <img src="{{ url_for('static', filename='images/' + i.seller.id|string + '/' + p) }}" class="c{{i.id}}"id="{{i.name}}"style="height: 9.5rem;width: 100%;"/> 
+                    
+                    </div>
+                    {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample{{i.id}}" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExample{{i.id}}" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+        <!-- PRODUCTS USER DIV DETAILS -->
+        <div class="col-9 ps-1" style="height: 9.5rem;background-color:slategray;color:lightgray;">
+            <div class="p-0 m-0">
+                <h5>Name:{{ i.name[:27] }}</h5>
+            </div>
+            <div class="p-0" style=" margin-top:-.9em;">
+                <em style="font-size: .85rem;">Description : {{ i.description[:77] }}</em>
+                <br><p style="font-size: .7rem;">date of pubblication:{{ i.date_posted.strftime('%Y -%h -%d') }}</p>
+            </div>
+            <div style="margin-top: -1em;">
+                <em>Cost :{{ i.price }}$ </em>
+                
+            </div>
+            <div class="hstack gap-3 position-absolute top-0 end-0 p-3" >
+                <!-- PRODUCTS USER SOW -->
+                <button class="btn-outline-info p-0 shadow" style="width:2.5vw;height: 5.3vh;">
+                    <a href="/product/{{i.id}}"><img src="{{ url_for('static', filename='ico/arrow.svg')}}"style="width:3.3vw;height: 4.7vh;border-radius:50%;margin-left:-.9em;"></img>
+                    </a>
+                </button>
+            
+                <!-- PRODUCTS USER DELETE -->
+                <button class="btn-outline-info p-0 shadow " style="width:2.5vw;height: 5.7vh;">
+                    <a href="/product/{{i.id}}/delete"><img src="{{ url_for('static', filename='ico/trash.svg')}}"style="width:3.3vw;height:4.4vh;border-radius:50%;margin-left:-.7em;"></img>
+                    </a>
+                </button>
+            </div>
+        </div>
+    </div><br>
+    {% else %}
+    <h4 class="font">No products to show</h4>
+    {% endfor %}
+</div>
+
+{% endblock %}
