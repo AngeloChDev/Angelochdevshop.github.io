@@ -1,61 +1,28 @@
 {% extends "index.html" %} {% block title %}Product{% endblock %} 
 {% block content %}
-<div class="row mx-auto p-2">
-    <h1>{{ prod.name}}</h1>
-</div>
-<div class="row">
-    <div id="carouselExample{{prod.id}}" class="carousel slide">
-        <div class="carousel-inner">
-            {% for p in prod.photo %}
-            <div class="carousel-item active">
-                
-                <img src="{{ url_for('static', filename='images/' + prod.seller.id|string + '/products_photo/' + p) }}"style="height: 45vh;width: 80%;margin-left:7vw;"/> 
-            
-            </div>
-            {% endfor %}
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample{{prod.id}}" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample{{prod.id}}" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
-    </div>
-</div>
-<div class="row ps-4 pt-3">
-    <p>Seller :<em class="ms-2">{{ prod.seller.username }}</em></p>
-</div>
-<div class="row ms-1 p-2">
-    <p>Cost :<em class="ms-2">{{ prod.price }} $</em></p>
-</div>
-<div class="row ps-3">
-    <p>Description :</p><em>{{ prod.description }}</em>
-</div>
 {% if user.id == seller.id %}
-<div class="hstack gap-3 border border-info-subtle p-2 bg-info bg-opacity-10 rounded ms-2">
+<div class="hstack gap-3 border border-info-subtle p-2 bg-info bg-opacity-10 rounded  position-absolute top-0 w-100 ">
     <button class="btn  m-auto border border-success-subtle bg-success bg-opacity-10" style="color:bisque" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottomSetName" aria-controls="offcanvasBottom">Change Name</button>
     <button class="btn  m-auto border border-success-subtle bg-success bg-opacity-10" style="color:bisque" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottomSetDescription" aria-controls="offcanvasBottom">Change description</button>
     <button class="btn  m-auto border border-success-subtle bg-success bg-opacity-10" style="color:bisque" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottomSetPrice" aria-controls="offcanvasBottom">Change price</button>
 </div>
-<div class="offcanvas offcanvas-bottom whitesmoke"  tabindex="-1" id="offcanvasBottomSetName" aria-labelledby="offcanvasBottomLabel">
+<div class="offcanvas offcanvas-bottom whitesmoke" style="height: 40vh;" tabindex="-1" id="offcanvasBottomSetName" aria-labelledby="offcanvasBottomLabel">
     <div class="offcanvas-header">
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body small">
         <form method="POST" id="form_name">
-            <div class="row p-4 form-group m-auto offcanvas-body ">
+            <div class="d-flex justify-content-around ">
                 <input
                     type="text" 
-                    class="form-control border border-primary ms-3 w-50 display-left mt-3"
+                    class="form-control border border-primary w-50"
                     name="input_fieldName"
                     id="input_fieldName"
                     placeholder="Enter new product name"
                 />
                 <input
                     type="submit"
-                    class="btn btn-outline-primary display-right-5 me-5 mt-3"
+                    class="btn btn-outline-primary w-25"
                     id="form_name"
                     name="form_name"
                     value="submit"
@@ -80,7 +47,7 @@
                 ></textarea>
                 <input
                     type="submit"
-                    class="btn mt-2 btn-outline-primary ms-25"
+                    class="btn mt-2 btn-outline-primary ms-2 w-1"
                     name="form_description"
                     value="submit"
                 />
@@ -88,23 +55,23 @@
         </form>
     </div>
 </div> 
-<div class="offcanvas offcanvas-bottom whitesmoke"  tabindex="-1" id="offcanvasBottomSetPrice" aria-labelledby="offcanvasBottomLabel">
+<div class="offcanvas offcanvas-bottom whitesmoke" style="height: 40vh;" tabindex="-1" id="offcanvasBottomSetPrice" aria-labelledby="offcanvasBottomLabel">
     <div class="offcanvas-header">
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body small">
         <form method="POST">
-            <div class="row p-4 form-group m-auto offcanvas-body ">
+            <div class="d-flex justify-content-around">
                 <input
                     type="number" 
-                    class="form-control border border-primary ms-3 w-50 display-left mt-3"
+                    class="form-control border border-primary w-50"
                     name="input_fieldPrice" 
                     id="input_fieldPrice"
                 />
 
                 <input 
                     type="submit" 
-                    class="btn btn-outline-primary display-right-5 me-5 mt-3"
+                    class="btn btn-outline-primary w-25 "
                     name="form_price"
                     value="submit"
                 />
@@ -124,6 +91,41 @@
     </form>
 </div>
 {% endif %}
+<div class="row font mt-4 p-2">
+    <h1>{{ prod.name}}</h1>
+</div>
+<div class="row">
+    <div id="carouselExample{{prod.id}}" class="carousel slide">
+        <div class="carousel-inner">
+            {% for p in prod.photo %}
+            <div class="carousel-item active">
+                
+                <img src="{{ url_for('static', filename='images/' + prod.seller.id|string + '/products_photo/' + p) }}"style="height: 45vh;width: 80%;margin-left:7vw;"/> 
+            
+            </div>
+            {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample{{prod.id}}" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample{{prod.id}}" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
+
+<div class="row ps-4 pt-3">
+    <p>Seller :<em class="ms-2">{{ prod.seller.username }}</em></p>
+</div>
+<div class="row ms-1 p-2">
+    <p>Cost :<em class="ms-2">{{ prod.price }} $</em></p>
+</div>
+<div class="row ps-3">
+    <p>Description :</p><em>{{ prod.description }}</em>
+</div>
+
 
 
 {% endblock %}

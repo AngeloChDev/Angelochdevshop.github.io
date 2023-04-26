@@ -59,13 +59,27 @@ body{
 .ms-25{
   margin-left: 25vw;
 }
-
+.w-1xs{
+  width: 9vw;
+}
 .w-1{
   width: 13vw;
 }
 
 .w-2{
   width: 25vw;
+}
+.w-3{
+  width: 40vw;
+}
+.fs-xs{
+  font-size: smaller;
+}
+.fs-s{
+  font-size: small;
+}
+.h2em{
+  height:5vh;
 }
 
 .display-left{

@@ -25,7 +25,7 @@
     <title>{% block title %}Home{% endblock %}</title>
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-lg ">
+    <nav  class="navbar navbar-expand-lg navbar-dark bg-dark shadow-lg sticky-top">
       <button
         class="navbar-toggler"
         type="button"
@@ -34,13 +34,10 @@
       >
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse bg-base">
-        <div class="navbar-nav">
-
-          
-          
+      <div class="collapse navbar-collapse bg-base mt-2" id="navbar">
+        <div class="navbar-nav" >
           <a class="nav-item nav-link " id="shop" href="/shop"><em><b class="text-primary">Shop</b></em></a>
-         {% if user.is_authenticated %}
+          {% if user.is_authenticated %}
           <a class="nav-item nav-link" id="logout" href="/logout"><em><b class="text-primary">Logout</b></em></a>
           <a class="nav-item nav-link " id="home" href="/home"><em><b class="text-primary">Home</b></em></a>
          {% else %}
@@ -89,6 +86,9 @@
         </div>
         <div class="row p-2">
           <a href="{{ url_for('homeInfo.infoSelled') }}" class="h-o shadow btn p-2 btn btn-outline-info w-2"><b class="fw-bolder">Selled</b></a>
+        </div>
+        <div class="row p-2">
+          <a href="{{ url_for('utils.getWallet') }}" class="h-o shadow btn p-2 btn btn-outline-warning w-2"><b class="fw-bolder">Get wallet</b></a>
         </div>
         <div class="row p-2">
           <a href="{{ url_for('utils.bio') }}" class="h-o shadow btn p-2 btn btn-outline-warning w-2"><b class="fw-bolder">Write your bio</b></a>

@@ -4,6 +4,7 @@ from . import db
 from sqlalchemy import JSON
 from werkzeug.security import generate_password_hash, check_password_hash
 
+
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
@@ -15,6 +16,8 @@ class User(db.Model, UserMixin):
     contact = db.relationship('Contact', backref='user_contact', lazy=True)
     authenticated = db.relationship('Authenticated', backref='user_auth', lazy=True)
     photo_user =db.Column(JSON)
+    authenticated = db.Column(db.Boolean(), nullable=False, default=False)
+   
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)

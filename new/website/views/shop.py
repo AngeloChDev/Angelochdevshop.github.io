@@ -13,14 +13,12 @@ shopPage = Blueprint('shopPage', __name__)
 @shopPage.route("/shop", methods=['GET', 'POST'])
 def shop():
     row = list()
-    default_ord = current_app.config['DEFAULT_ORD']
-    countr = countries
+    countr = current_app.config["COUNTRIES"]#countries
     result = defaultdict(lambda: {'product': '', 'quantity': 0, })
     CATEGORY = current_app.config["CATEGORY_PRODUCT"]
     try:
         row = Product.query.filter_by(DELETED=False).all()
         
-    
     except:
         pass
     finally:
@@ -56,8 +54,6 @@ def shop():
                     result['quantity'] = int(qnt)
                     session['CART'].append(result)
                     flash('Product added to cart', category="success")
-                    
-                    
             else:
                 redirect(404)
     

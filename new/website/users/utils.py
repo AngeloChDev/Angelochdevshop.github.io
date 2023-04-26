@@ -6,6 +6,13 @@ from flask import current_app
 from werkzeug.utils import secure_filename
 import os
 import random
+from bitcoinlib.wallets import Wallet
+import bitcoin 
+from email.message import EmailMessage
+import ssl
+import smtplib
+import time
+
 
 utils = Blueprint('utils', __name__)
 
@@ -14,14 +21,16 @@ utils = Blueprint('utils', __name__)
 def product():
     check = False
     CATEGORY = current_app.config["CATEGORY_PRODUCT"]
-    c = Contact.query.filter_by(user_id=current_user.id).first()
+    try:
+        c = Contact.query.filter_by(user_id=current_user.id).first()
 
-        
-    if not c.wallet:
-        flash('Register a wallet is required', category='error')
-    else:
-        flash('Register a wallet is required', category='success')
-
+        if not current_user.authenticated and c:
+            flash('Authenticate user and Register a wallet are required', category='success')
+        else:
+            pass
+    except:
+        pass
+    finally:
         if request.method == 'POST':
             name = request.form.get('product_name')
             description = request.form.get('product_description')
@@ -55,6 +64,7 @@ def product():
                 db.session.add(product)
                 db.session.commit()
                 flash('Product created successfully', category="success")
+        
     
     return  render_template('createProduct.html', user=current_user, product_category=CATEGORY)
 
@@ -97,7 +107,6 @@ def contact():
         if request.method == 'POST':
             email = request.form.get('email')
             number = request.form.get('number')
-            wallet = request.form.get('wallet_field')
             s_link = request.form.get('social')
             s_name = request.form.get('social_name')
             s2_link = request.form.get('social2')
@@ -108,8 +117,6 @@ def contact():
                     user_contact.email=email
                 if number:
                     user_contact.number=number
-                if wallet:
-                    user_contact.wallet=wallet
                 if s_name:
                     user_contact.social_name=s_name
                     user_contact.social_link=s_link
@@ -118,7 +125,7 @@ def contact():
                     user_contact.social2_link=s2_link
                 db.session.commit()
             else:
-                c = Contact(user_id=current_user.id,email=email,number=number,wallet=wallet,social_name=s_name,social_link=s_link, social2_name=s2_name,social2_link=s2_link)
+                c = Contact(user_id=current_user.id,email=email,number=number,social_name=s_name,social_link=s_link, social2_name=s2_name,social2_link=s2_link)
                 db.session.add(c)
                 db.session.commit()
             flash('New contact mode added', category="success")
@@ -149,9 +156,112 @@ def photo_user():
     return render_template('photo_user.html', user= current_user)
 
 
+@utils.route('/getWallet', methods=['GET', 'POST'])
+@login_required
+def getWallet():
+    
+    currency_list = current_app.config['CRYPTO_CURRENCY']
+    try:
+        c = Contact.query.filter_by(user_id = current_user.id).first()
+
+        if c.wallet:
+            flash('wallet already exist ', category="error")
+        else:
+            pass
+    except:
+        pass
+    finally:
+        if request.method == 'POST':
+            if 'submitWallet' in request.form:
+                currency_selected = request.form['currency_selector']
+                return 'done'
+            elif 'addOldWallet' in request.form:
+                wallet_addr = request.form.get('wallet_field')
+                currency = request.form.get('currency_field')
+
+                wallet = {'wallet_addr':wallet_addr, 'currency':currency}
+                c = Contact.query.filter_by(user_id = current_user.id).first()
+                if c:
+                    if c.wallet:
+                        email_sender = current_app.config['EMAIL_PYTHON']
+                        password = current_app.config['EMAIL_PYTHON_PASS']
+                        email_reciver = current_app.config['EMAIL_INFOSITE']
+                        subject = 'Change Wallet Request'
+                        body = f'The user with id {current_user.id} want to cange him wallet address with the new {str(wallet)}'
+
+                        em = EmailMessage()
+                        em['From'] = email_sender
+                        em['To'] = email_reciver
+                        em['Subject'] = subject
+                        em.set_content(body)
+                        context = ssl.create_default_context()
+
+                        with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
+                            smtp.login(email_sender, password)
+                            smtp.sendmail(email_sender, email_reciver, em.as_string())
+                else:
+                    contact = Contact(user_id=current_user.id,wallet=wallet)
+                
+                    db.session.add(contact)
+                    db.session.commit()
+                    flash('ok',category="success")
+                    return redirect(url_for('main.home'))
+            else: 
+                flash('some error', category="error")
+    return render_template('getWallet.html', user = current_user, currency=currency_list, c=c)
+
+
+auth_pin = ''.join(random.choice('1234567890') for i in range(5))
 @utils.route('/Authenticate', methods=['GET', 'POST'])
 @login_required
 def authenticate():
+    global auth_pin
+    if request.method == 'POST':
+        user_email = request.form.get('authenticate_email')
+        email_sender = current_app.config['EMAIL_INFOSITE']
+        password = current_app.config['EMAIL_INFOSITE_PYTHON_PASS']
+    
+        if 'submit_authenticate_email' in request.form:
+           
+            subject = 'Authenticate User Code'
+            body = f'Your security code is :{auth_pin}'
 
+            em = EmailMessage()
+            em['From'] = email_sender
+            em['To'] = user_email
+            em['Subject'] = subject
+            em.set_content(body)
+            context = ssl.create_default_context()
+            
+            with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
+                smtp.login(email_sender, password)
+                smtp.sendmail(email_sender, user_email, em.as_string())
 
+            time.sleep(80) 
+            pass
+
+        elif 'submit_authenticate_code' in request.form:
+            code = request.form['authenticate_code']
+
+            if auth_pin == code: 
+                link = current_app.config['MEET_LINK']
+                flash('Security sistem passed successfully', category="success")
+                subject = 'Authenticate user video-call link'
+                body = f'Your link for partecipate at the video-call :{link}'
+
+                em = EmailMessage()
+                em['From'] = email_sender
+                em['To'] = user_email
+                em['Subject'] = subject
+                em.set_content(body)
+                context = ssl.create_default_context()
+                
+                with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
+                    smtp.login(email_sender, password)
+                    smtp.sendmail(email_sender, user_email, em.as_string())
+
+            else:
+                flash('Codes doesn t match', category="error")
+        else:
+            pass
     return render_template('authenticate.html', user = current_user)

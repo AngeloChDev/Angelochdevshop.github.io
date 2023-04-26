@@ -36,7 +36,8 @@
                 <li>
                     <img src="{{ url_for('static', filename='ico/coin.svg')}}" style="filter:invert(100%);">
                     </img>
-                    Wallet: {{ contact.wallet[-1] }}
+                    Wallet: {{ contact.wallet['wallet_addr'] }}<br>
+                    Currency: {{ contact.wallet['currency']}}
                 </li>
                 {% endif %}
                 {% if contact.social_name %}
@@ -77,11 +78,11 @@
 
 <div class="row p-2">
     
-    <div class="row px-4 py-0">
-        <div class="col-3 shadow">
+    <div class="row px-2 py-0 ">
+        <div class="col-auto shadow">
             
           
-            <div id="carouselExample{{i.id}}" class="carousel slide">
+            <div id="carouselExample{{i.id}}" class="carousel slide w-2">
                 <div class="carousel-inner">
                     {% for p in i.photo %}
                     <div class="carousel-item active">
@@ -101,7 +102,7 @@
                 </button>
             </div>
         </div>
-        <div class="col-9 ps-1" style="height: 12.5rem;background-color:slategray;color:lightgray;">
+        <div class="col-7  ps-1" style="height: 12.5rem;background-color:slategray;color:lightgray;">
             <div class="p-0 m-0">
                 <h5>Name:{{ i.name[:77] }}</h5>
             </div>
@@ -114,18 +115,16 @@
                 
             </div>
             <div class="col p-2">
-            
-                <button class="btn-outline-info p-0 shadow bg-success bg-opacity-10" style="width:2em;height: 2em;">
-                    <a href="/product/{{i.id}}"><img src="{{ url_for('static', filename='ico/arrow.svg')}}"style="width:2em;height:em;border-radius:50%;margin: auto;"></img>
-                    </a>
-                </button>
+        
+                <a href="/product/{{i.id}}"><img src="{{ url_for('static', filename='ico/eye.svg')}}"style="width:2em;height:2em;border-radius:50%;margin: auto;"></img>
+                </a>
             </div>
             <div class="p-0 position-absolute bottom-0 start-50 translate-middle-x mb-2" >
                 <form method="POST" class="w-50 ">
-                    <div class="hstack gap-3 w-100" >
+                    <div class="hstack w-100" >
                       <input type="number" name="qnt" id="qnt" min="1" class="border border-primary shadow  bg-body-tertiary rounded w-1" style="font-size:1em;height:2em; margin-right:2em;margin-top:.4em">
                       <input type="hidden" name="code" value="{{ i.id }}">
-                      <div class="vr"></div>
+                      
                       <input type="submit" name="buyNowSellerView" class="btn btn-success btn-md shadow font p-1 w-100" value="Buy now!" style="height: 2em;">
                     </div>
                 </form>

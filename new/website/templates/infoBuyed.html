@@ -50,7 +50,8 @@
                                 <span>
                                     <img src="{{ url_for('static', filename='ico/coin.svg')}}" style="filter:invert(100%);">
                                     </img>
-                                    Wallet: {{ i.wallet }}
+                                    Wallet: {{ i.wallet['wallet_addr'] }}<br>
+                                    Currency: {{ i.wallet['currency']}}
                                 </span><br>
                                 {% endif %}
                                 {% if i.number %}

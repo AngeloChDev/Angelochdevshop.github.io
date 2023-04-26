@@ -1,13 +1,7 @@
 {% extends "index.html" %} {% block title %}Shop{% endblock %} {% block content
     %}
 <div class=" hstack gap-5 px-5 text-center">
-  
   <h1 class="position-absolute start-50">Shop</h1><br>
-
-  <form method="POST" class="position-absolute end-0 me-5 mt-2 ">
-    <input type="submit" name="pay"value="pay" class="btn btn-outline-success bg-base">
-  </form>
-  <a href="/home" class="btn btn-outline-success bg-base">home</a>
 </div>
 
 <div class="row p-2 form-group">
@@ -43,7 +37,7 @@
             <div class="carousel-item active">
                 
               <img srcset="{{ url_for('static', filename='images/' + i.seller.id|string + '/products_photo/' + p) }}"
-               src="" style="height: 12.5em;width: 100%;"/> 
+               style="height:10em;width: 100%;"/> 
             
             </div>
             {% endfor %}
@@ -57,7 +51,7 @@
           <span class="visually-hidden">Next</span>
         </button>
     </div>
-      <div class="card-body p-1" style="height: 10rem;background-color:slategray;color:lightgray;">
+      <div class="card-body p-0 ps-2" style="height:8rem;background-color:slategray;color:lightgray;">
         <div class="row">
           <div class="col-9">
             <h3>Article {{ i.name[:22] }}</h3>
@@ -70,23 +64,22 @@
             </button>
           </div>
         </div><br>
-        <div class="row p-2" style="margin-top: -2em;" >
-          <p>Cost {{ i.price }}$ </p>
-        </div><br>
-        <div class="p-0" style="margin-top: -3em;">
-          <form method="POST" style="width:100%;">
-            <div class="row" style="padding: 0;margin-left:.2em;margin-top: -1.4em;">
-              <div class="col">
-                <input type="number" name="qnt" id="qnt" min="1" class="border border-primary shadow p-3 mb-5 bg-body-tertiary rounded" style="font-size:1em; width:3.6em; height:2em; margin-right:2em;margin-top:.4em">
+        <div class="row p-0" style="margin-top:-2em;" >
+          <p>Cost {{ i.price }}$ </p><br>
+          <div class="p-0 ms-1 ps-2 mt-0" >
+            <form method="POST" style="width:100%;">
+              <div class="hstack gap-3 ms-2">
+                
+                <input type="number" name="qnt" id="qnt" min="1" class="border border-primary shadow p-3 mb-4 bg-body-tertiary rounded" style="font-size:.8em; width:3em; height:1.3em;">
                 <input type="hidden" name="code" value="{{ i.id }}">
+              
+                <input type="submit" name="buy_now" class="btn btn-success btn-md shadow font p-1 mb-4" value="Buy now!" style="height: 2em;">
+              
               </div>
-            
-              <div class=" col  mx-auto">
-                <input type="submit" name="buy_now" class="btn btn-success btn-md shadow font p-1 w-1" value="Buy now!" style="height: 2em; width:100%">
-              </div>
-            </div>
-          </form>
-        </div>
+            </form>
+          </div>
+        </div><br>
+        
       </div>
     </div>
   </div>

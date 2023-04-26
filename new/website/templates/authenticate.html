@@ -3,6 +3,18 @@
 <div class="col font p-3 pt-0">
 <h3 class="fs-4">Authenticate your account</h3>
 
+<form method="POST">
+    <div id="auth_email" class="row d-flex justify-content-center form-group ps-2 ">
+        <label for="authenticate_email">Insert your email</label>
+        <input type="email" name="authenticate_email" class="form-control w-3">
+        <input type="submit" value="Submit" onclick="framecheck()" name="submit_authenticate_email" class="w-1 btn btn-outline-primary ms-2">
+    </div>
+    <div class="row form-group d-flex justify-content-center">
+        <label for="authenticate_code">Insert your code</label>
+        <input type="number" name="authenticate_code" class="form-control w-1">
+        <input type="submit" value="Submit" name="submit_authenticate_code" class="w-1 btn btn-outline-primary ms-2">
+    </div>    
+</form>
 
 <span translate="no">
     <img src="{{ url_for('static', filename='ico/email.svg')}}" style="filter:invert(100%);">

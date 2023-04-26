@@ -1,0 +1,47 @@
+{% extends "home.html" %} {% block title %}Get Wallet{% endblock %} 
+{% block getWallet %}
+<div class="row lightgrey  font">
+    <h3>Subscribe your wallet's</h3>
+</div>
+<br>
+<div class="col-auto m-auto">
+    <form action="" method="POST" align="center" class="position-relative col m-auto">
+        <div class="row p-1">
+            <div class="col form-floating">
+                <input 
+                    type="text"
+                    class="mt-0 mb-1 pb-0 form-control fs-s w-3 h-100"
+                    id="wallet_field"
+                    name="wallet_field"
+                    placeholder="Wallet"
+                >
+                <label for="wallet_field" class="pb-0 mb-0 ms-2 mt-1 pt-1 fs-xs">Wallet :</label>
+                
+            </div>
+            <div class="col form-floating">
+                
+                <input 
+                    type="text"
+                    class=" mb-1 pb-0 form-control w-1xs fs-s h-100"
+                    id="currency_field"
+                    name="currency_field"
+                    placeholder="Currency"
+                >
+                <label for="currency_field" class="ms-2 mt-1 mb-0 pt-1 fs-xs">Currency :</label>
+            </div>
+            <input class="btn btn-outline-success w-1xs" type="submit" name="addOldWallet" value="Add">
+        </div><br>
+        <div class="hstack justify-content-center">
+            <select name="currency_selector" id="currency_selector" class="w-1 form-select">
+                {% for i in currency%}
+                <option class="font" value="{{i}}">{{i}}</option>
+                {% endfor%}
+            </select>
+            <input type="submit" name="submitWallet" class="btn w-1 btn-outline-success" value="Get">
+        </div>
+    </form>
+</div>
+<br>
+<br>
+
+{% endblock%}
